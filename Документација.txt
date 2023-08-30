@@ -1,5 +1,5 @@
 База података:
-1. Predmet: id, naziv, godina, semestar, istorijat, espb, tezina (1 - лако, 2 - средње, 3 - тешко)
+1. Predmet: id, naziv, godina, semestar, poruka, espb, tezina (1 - лако, 2 - средње, 3 - тешко)
 2. Sesija: id, fk_predmet, datum, vreme_pocetka, vreme_zavrsetka, ukupno_vreme, efektivno_vreme, efikasnost, poruka
 
 --------------------------------------------------------------------------------------------

@@ -7,6 +7,6 @@ CREATE TABLE Predmet(
   naziv NVARCHAR(100) NOT NULL,
   godina INT NOT NULL,
   semestar INT NOT NULL,
-  istorijat NVARCHAR(50),
+  poruka NVARCHAR(500),
   
 );
