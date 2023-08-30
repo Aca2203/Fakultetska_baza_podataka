@@ -37,6 +37,8 @@ INSERT INTO Sesija VALUES (1, 3, '2023-10-05', '14:30', '16:00', '1:30', '1:00',
 INSERT INTO Sesija VALUES (2, 2, '2023-10-05', '18:00', '20:00', '2:00', '1:40', 83.33, NULL);
 INSERT INTO Sesija VALUES (3, 1, '2023-10-06', '09:00', '09:30', '0:30', '0:30', 100.00, NULL);
 
-SELECT efikasnost
-FROM Sesija
-WHERE id = 1;
+SELECT *
+FROM Sesija;
+
+
+SELECT Predmet.naziv AS 'Назив предмета', datum AS 'Датум сесије', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност'
