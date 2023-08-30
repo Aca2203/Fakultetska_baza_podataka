@@ -29,10 +29,14 @@ CREATE TABLE Sesija(
   vreme_zavrsetka TIME,
   ukupno_vreme TIME,
   efektivno_vreme TIME,
-  efikasnost DECIMAL(2),
+  efikasnost DECIMAL(5, 2),
   poruka NVARCHAR(500)
 );
 
 INSERT INTO Sesija VALUES (1, 3, '2023-10-05', '14:30', '16:00', '1:30', '1:00', 66.67, NULL);
 INSERT INTO Sesija VALUES (2, 2, '2023-10-05', '18:00', '20:00', '2:00', '1:40', 83.33, NULL);
-INSERT INTO Sesija VALUES (3, 1, '2023-10-06', '09:00', '09:30', '0:30', '0:30', 100, NULL);
+INSERT INTO Sesija VALUES (3, 1, '2023-10-06', '09:00', '09:30', '0:30', '0:30', 100.00, NULL);
+
+SELECT efikasnost
+FROM Sesija
+WHERE id = 1;
