@@ -7,6 +7,21 @@ USE Pomocna;
 
 DROP DATABASE Fakultetska_baza_podataka;
 
+--Функције: ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE FUNCTION efikasnost_sesije(@ukupno_vreme TIME, @efektivno_vreme TIME)
+RETURNS DECIMAL (5, 2)
+AS
+BEGIN
+  IF (@ukupno_vreme IS NULL) OR (@efektivno_vreme IS NULL) RETURN NULL
+  ELSE
+  BEGIN
+    DECLARE @ukupno_minuta INT = DATEDIFF(MINUTE, 0, @ukupno_vreme);
+	DECLARE @efektivno_minuta INT = DATEDIFF(MINUTE, 0, @efektivno_vreme);
+	RETURN CAST(@efektivno_minuta AS DECIMAL) / CAST(@ukupno_minuta AS DECIMAL) * 100;
+  END;
+  RETURN NULL;
+END;
+
 --Табеле: ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE Predmet(
   id INT PRIMARY KEY IDENTITY (1, 1),
@@ -25,7 +40,6 @@ INSERT INTO Predmet VALUES (N'Објектно оријентисано прог
 SELECT *
 FROM Predmet;
 
-
 CREATE TABLE Sesija(
   id INT PRIMARY KEY IDENTITY (1, 1),
   fk_predmet INT FOREIGN KEY REFERENCES Predmet(id),
@@ -34,13 +48,13 @@ CREATE TABLE Sesija(
   vreme_zavrsetka TIME,
   ukupno_vreme TIME,
   efektivno_vreme TIME,
-  efikasnost DECIMAL(5, 2),
+  efikasnost AS dbo.efikasnost_sesije(ukupno_vreme, efektivno_vreme),
   poruka NVARCHAR(500)
 );
 
-INSERT INTO Sesija VALUES (3, '2023-10-05', '14:30', '16:00', '1:30', '1:00', 66.67, NULL);
-INSERT INTO Sesija VALUES (2, '2023-10-05', '18:00', '20:00', '2:00', '1:40', 83.33, NULL);
-INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', '0:30', '0:30', 100.00, NULL);
+INSERT INTO Sesija VALUES (3, '2023-10-05', '14:30', '16:00', '1:30', '1:00', NULL);
+INSERT INTO Sesija VALUES (2, '2023-10-05', '18:00', '20:00', '2:00', '1:40', NULL);
+INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', '0:30', '0:30', NULL);
 
 SELECT *
 FROM Sesija;
