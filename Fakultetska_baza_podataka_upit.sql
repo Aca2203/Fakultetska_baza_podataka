@@ -40,6 +40,8 @@ INSERT INTO Predmet VALUES (N'Објектно оријентисано прог
 SELECT *
 FROM Predmet;
 
+
+
 CREATE TABLE Sesija(
   id INT PRIMARY KEY IDENTITY (1, 1),
   fk_predmet INT FOREIGN KEY REFERENCES Predmet(id),
@@ -55,17 +57,20 @@ CREATE TABLE Sesija(
 INSERT INTO Sesija VALUES (3, '2023-10-05', '14:30', '16:00', '1:30', '1:00', NULL);
 INSERT INTO Sesija VALUES (2, '2023-10-05', '18:00', '20:00', '2:00', '1:40', NULL);
 INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', '0:30', '0:30', NULL);
+INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', '0:30', NULL, NULL);
+INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', NULL, '0:30', NULL);
+INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', NULL, NULL, NULL);
 
 SELECT *
 FROM Sesija;
 
+
 -- Пример приказа
-SELECT Predmet.naziv AS 'Назив предмета', datum AS 'Датум сесије', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност'
+SELECT Sesija.id AS 'ID сесије', Predmet.naziv AS 'Назив предмета', datum AS 'Датум сесије', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност'
 FROM Sesija
 JOIN Predmet ON Predmet.id = Sesija.fk_predmet;
 
 -- Процедуре: --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 CREATE PROCEDURE Predmet_Insert
 @naziv NVARCHAR(100),
 @godina INT,
@@ -87,6 +92,8 @@ END CATCH;
 
 EXEC Predmet_Insert @naziv = N'Физика 1', @godina = 1, @semestar = 1, @espb = 6;
 EXEC Predmet_Insert @naziv = N'Физика 1', @godina = 1, @semestar = 1, @espb = 6;
+
+
 
 CREATE PROCEDURE Predmet_Update
 @naziv NVARCHAR(100),
@@ -113,6 +120,8 @@ END CATCH;
 EXEC Predmet_Update @naziv = N'Физика 1', @godina = 3, @semestar = 2, @poruka = N'Здраво!', @espb = 3, @tezina = 3;
 EXEC Predmet_Update @naziv = N'Математика 1', @godina = 3, @semestar = 2, @poruka = N'Здраво!', @espb = 3, @tezina = 3;
 
+
+
 CREATE PROCEDURE Predmet_Delete
 @naziv NVARCHAR(100)
 AS
@@ -132,3 +141,74 @@ END CATCH;
 
 EXEC Predmet_Delete @naziv = N'Физика 1';
 
+
+
+CREATE PROCEDURE Sesija_Insert
+@fk_predmet INT,
+@datum DATE,
+@vreme_pocetka TIME,
+@vreme_zavrsetka TIME,
+@ukupno_vreme TIME,
+@efektivno_vreme TIME,
+@poruka NVARCHAR(500)
+AS
+SET LOCK_TIMEOUT 3000;
+BEGIN TRY
+  INSERT INTO Sesija (fk_predmet, datum, vreme_pocetka, vreme_zavrsetka, ukupno_vreme, efektivno_vreme, poruka) VALUES (@fk_predmet, @datum, @vreme_pocetka, @vreme_zavrsetka, @ukupno_vreme, @efektivno_vreme, @poruka)
+  RETURN 0;
+END TRY
+BEGIN CATCH
+  RETURN @@ERROR;
+END CATCH;
+
+EXEC Sesija_Insert @fk_predmet = 2, @datum = '2023-08-31', @vreme_pocetka = '17:30', @vreme_zavrsetka = '18:30', @ukupno_vreme = '1:00', @efektivno_vreme = '0:40', @poruka = N'Ово је порука.';
+
+
+
+CREATE PROCEDURE Sesija_Update
+@id INT,
+@fk_predmet INT,
+@datum DATE,
+@vreme_pocetka TIME,
+@vreme_zavrsetka TIME,
+@ukupno_vreme TIME,
+@efektivno_vreme TIME,
+@poruka NVARCHAR(500)
+AS
+SET LOCK_TIMEOUT 3000;
+BEGIN TRY
+  IF EXISTS(SELECT TOP 1 id FROM Sesija
+  WHERE id = @id)
+  BEGIN
+    UPDATE Sesija SET fk_predmet = @fk_predmet, datum = @datum, vreme_pocetka = @vreme_pocetka, vreme_zavrsetka = @vreme_zavrsetka, ukupno_vreme = @ukupno_vreme, efektivno_vreme = @efektivno_vreme, poruka = @poruka WHERE id = @id
+	RETURN 0;
+  END;
+  RETURN -1;
+END TRY
+BEGIN CATCH
+  RETURN @@ERROR;
+END CATCH;
+
+EXEC Sesija_Update @id = 7, @fk_predmet = 3, @datum = '2023-08-29', @vreme_pocetka = '16:30', @vreme_zavrsetka = '19:30', @ukupno_vreme = '3:00', @efektivno_vreme = '2:40', @poruka = N'Ово је порука!';
+EXEC Sesija_Update @id = 50, @fk_predmet = 3, @datum = '2023-08-29', @vreme_pocetka = '16:30', @vreme_zavrsetka = '19:30', @ukupno_vreme = '3:00', @efektivno_vreme = '2:40', @poruka = N'Ово је порука!';
+
+
+
+CREATE PROCEDURE Sesija_Delete
+@id INT
+AS
+SET LOCK_TIMEOUT 3000;
+BEGIN TRY
+  IF EXISTS(SELECT TOP 1 id FROM Sesija
+  WHERE id = @id)
+  BEGIN
+    DELETE FROM Sesija WHERE id = @id;
+	RETURN 0;
+  END;
+  RETURN -1;
+END TRY
+BEGIN CATCH
+  RETURN @@ERROR;
+END CATCH;
+
+EXEC Sesija_Delete @id = 7;
