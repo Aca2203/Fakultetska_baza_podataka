@@ -36,6 +36,7 @@ CREATE TABLE Predmet(
 INSERT INTO Predmet VALUES (N'Алгоритми и структуре података', 2, 1, NULL, 6, 3);
 INSERT INTO Predmet VALUES (N'Нумеричка анализа и дискретна математика', 2, 1, NULL, 6, 1);
 INSERT INTO Predmet VALUES (N'Објектно оријентисано програмирање', 2, 1, NULL, 6, 2);
+INSERT INTO Predmet VALUES (N'Физика 1', 1, 1, NULL, 6, 2);
 
 SELECT *
 FROM Predmet;
@@ -60,6 +61,7 @@ INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', '0:30', '0:30', NU
 INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', '0:30', NULL, NULL);
 INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', NULL, '0:30', NULL);
 INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', NULL, NULL, NULL);
+INSERT INTO Sesija VALUES (1, '2023-10-27', '11:00', '11:30', '0:30', '0:20', NULL);
 
 SELECT *
 FROM Sesija;

@@ -44,10 +44,12 @@
             this.txt_poruka = new System.Windows.Forms.RichTextBox();
             this.datum = new System.Windows.Forms.DateTimePicker();
             this.cmb_predmet = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btn_unesi_sesiju = new System.Windows.Forms.Button();
+            this.btn_izmeni_sesiju = new System.Windows.Forms.Button();
+            this.btn_obrisi_sesiju = new System.Windows.Forms.Button();
+            this.btn_osvezi = new System.Windows.Forms.Button();
+            this.grid_podaci = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.grid_podaci)).BeginInit();
             this.SuspendLayout();
             // 
             // lbl_id
@@ -196,55 +198,65 @@
             this.cmb_predmet.Size = new System.Drawing.Size(621, 37);
             this.cmb_predmet.TabIndex = 15;
             // 
-            // button1
+            // btn_unesi_sesiju
             // 
-            this.button1.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(951, 106);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(252, 46);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Унеси сесију";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btn_unesi_sesiju.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_unesi_sesiju.Location = new System.Drawing.Point(951, 106);
+            this.btn_unesi_sesiju.Name = "btn_unesi_sesiju";
+            this.btn_unesi_sesiju.Size = new System.Drawing.Size(252, 46);
+            this.btn_unesi_sesiju.TabIndex = 16;
+            this.btn_unesi_sesiju.Text = "Унеси сесију";
+            this.btn_unesi_sesiju.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btn_izmeni_sesiju
             // 
-            this.button2.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(951, 156);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(252, 46);
-            this.button2.TabIndex = 17;
-            this.button2.Text = "Унеси сесију";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btn_izmeni_sesiju.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_izmeni_sesiju.Location = new System.Drawing.Point(951, 156);
+            this.btn_izmeni_sesiju.Name = "btn_izmeni_sesiju";
+            this.btn_izmeni_sesiju.Size = new System.Drawing.Size(252, 46);
+            this.btn_izmeni_sesiju.TabIndex = 17;
+            this.btn_izmeni_sesiju.Text = "Измени сесију";
+            this.btn_izmeni_sesiju.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btn_obrisi_sesiju
             // 
-            this.button3.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(951, 208);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(252, 46);
-            this.button3.TabIndex = 18;
-            this.button3.Text = "Унеси сесију";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btn_obrisi_sesiju.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_obrisi_sesiju.Location = new System.Drawing.Point(951, 208);
+            this.btn_obrisi_sesiju.Name = "btn_obrisi_sesiju";
+            this.btn_obrisi_sesiju.Size = new System.Drawing.Size(252, 46);
+            this.btn_obrisi_sesiju.TabIndex = 18;
+            this.btn_obrisi_sesiju.Text = "Обриши сесију";
+            this.btn_obrisi_sesiju.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // btn_osvezi
             // 
-            this.button4.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(951, 260);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(252, 46);
-            this.button4.TabIndex = 19;
-            this.button4.Text = "Унеси сесију";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btn_osvezi.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_osvezi.Location = new System.Drawing.Point(951, 260);
+            this.btn_osvezi.Name = "btn_osvezi";
+            this.btn_osvezi.Size = new System.Drawing.Size(252, 46);
+            this.btn_osvezi.TabIndex = 19;
+            this.btn_osvezi.Text = "Освежи";
+            this.btn_osvezi.UseVisualStyleBackColor = true;
+            this.btn_osvezi.Click += new System.EventHandler(this.btn_osvezi_Click);
+            // 
+            // grid_podaci
+            // 
+            this.grid_podaci.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grid_podaci.Location = new System.Drawing.Point(12, 312);
+            this.grid_podaci.Name = "grid_podaci";
+            this.grid_podaci.Size = new System.Drawing.Size(1191, 435);
+            this.grid_podaci.TabIndex = 20;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1215, 656);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(1215, 759);
+            this.Controls.Add(this.grid_podaci);
+            this.Controls.Add(this.btn_osvezi);
+            this.Controls.Add(this.btn_obrisi_sesiju);
+            this.Controls.Add(this.btn_izmeni_sesiju);
+            this.Controls.Add(this.btn_unesi_sesiju);
             this.Controls.Add(this.cmb_predmet);
             this.Controls.Add(this.datum);
             this.Controls.Add(this.txt_poruka);
@@ -263,6 +275,8 @@
             this.Controls.Add(this.lbl_id);
             this.Name = "Form1";
             this.Text = "Факултетска база података - сесије";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.grid_podaci)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -286,10 +300,11 @@
         private System.Windows.Forms.RichTextBox txt_poruka;
         private System.Windows.Forms.DateTimePicker datum;
         private System.Windows.Forms.ComboBox cmb_predmet;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btn_unesi_sesiju;
+        private System.Windows.Forms.Button btn_izmeni_sesiju;
+        private System.Windows.Forms.Button btn_obrisi_sesiju;
+        private System.Windows.Forms.Button btn_osvezi;
+        private System.Windows.Forms.DataGridView grid_podaci;
     }
 }
 
