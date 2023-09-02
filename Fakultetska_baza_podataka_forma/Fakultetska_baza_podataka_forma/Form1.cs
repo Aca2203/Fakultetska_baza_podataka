@@ -42,12 +42,17 @@ namespace Fakultetska_baza_podataka_forma
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Osvezi();
+            Osvezi();           
         }
 
         private void btn_osvezi_Click(object sender, EventArgs e)
         {
             Osvezi();
+        }
+
+        private void grid_podaci_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

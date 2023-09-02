@@ -241,11 +241,14 @@
             // 
             // grid_podaci
             // 
+            this.grid_podaci.AllowUserToAddRows = false;
             this.grid_podaci.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid_podaci.Location = new System.Drawing.Point(12, 312);
             this.grid_podaci.Name = "grid_podaci";
+            this.grid_podaci.ReadOnly = true;
             this.grid_podaci.Size = new System.Drawing.Size(1191, 435);
             this.grid_podaci.TabIndex = 20;
+            this.grid_podaci.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid_podaci_CellClick);
             // 
             // Form1
             // 

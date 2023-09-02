@@ -66,6 +66,10 @@ INSERT INTO Sesija VALUES (1, '2023-10-27', '11:00', '11:30', '0:30', '0:20', NU
 SELECT *
 FROM Sesija;
 
+UPDATE sesija
+set poruka = N'Здраво!'
+where id = 3;
+
 
 -- Пример приказа
 SELECT Sesija.id AS 'ID сесије', Predmet.naziv AS 'Назив предмета', datum AS 'Датум сесије', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност'
