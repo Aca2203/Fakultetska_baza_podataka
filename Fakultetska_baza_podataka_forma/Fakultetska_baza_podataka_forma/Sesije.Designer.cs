@@ -1,6 +1,6 @@
 ﻿namespace Fakultetska_baza_podataka_forma
 {
-    partial class Form1
+    partial class Sesije
     {
         /// <summary>
         /// Required designer variable.
@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lbl_id = new System.Windows.Forms.Label();
             this.lbl_predmet = new System.Windows.Forms.Label();
             this.lbl_datum = new System.Windows.Forms.Label();
@@ -208,6 +210,7 @@
             this.btn_unesi_sesiju.TabIndex = 16;
             this.btn_unesi_sesiju.Text = "Унеси сесију";
             this.btn_unesi_sesiju.UseVisualStyleBackColor = true;
+            this.btn_unesi_sesiju.Click += new System.EventHandler(this.btn_unesi_sesiju_Click);
             // 
             // btn_izmeni_sesiju
             // 
@@ -243,7 +246,24 @@
             // grid_podaci
             // 
             this.grid_podaci.AllowUserToAddRows = false;
+            this.grid_podaci.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.grid_podaci.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.grid_podaci.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.grid_podaci.DefaultCellStyle = dataGridViewCellStyle2;
             this.grid_podaci.Location = new System.Drawing.Point(12, 312);
             this.grid_podaci.Name = "grid_podaci";
             this.grid_podaci.ReadOnly = true;
@@ -251,7 +271,7 @@
             this.grid_podaci.TabIndex = 20;
             this.grid_podaci.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid_podaci_CellClick);
             // 
-            // Form1
+            // Sesije
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -277,7 +297,7 @@
             this.Controls.Add(this.lbl_datum);
             this.Controls.Add(this.lbl_predmet);
             this.Controls.Add(this.lbl_id);
-            this.Name = "Form1";
+            this.Name = "Sesije";
             this.Text = "Факултетска база података - сесије";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grid_podaci)).EndInit();

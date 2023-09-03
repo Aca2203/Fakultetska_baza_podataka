@@ -1,0 +1,129 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Configuration;
+using System.Data.SqlClient;
+
+namespace Fakultetska_baza_podataka_forma
+{
+    public partial class Sesije : Form
+    {
+        string CS = ConfigurationManager.ConnectionStrings["CS"].ToString();
+        DataTable dt_sesije = new DataTable();
+        DataTable dt_predmeti = new DataTable();
+        SqlConnection veza;
+
+        public Sesije()
+        {
+            InitializeComponent();
+        }
+
+        private void Osvezi()
+        {
+            dt_sesije.Clear();
+            veza = new SqlConnection(CS);
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT Sesija.fk_predmet AS 'ID предмета', Sesija.poruka AS 'Порука', Sesija.id AS 'ID сесије', " +
+                "datum AS 'Датум сесије', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', " +
+                "ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', CAST(efikasnost AS VARCHAR) + '%' AS 'Ефикасност' FROM Sesija JOIN Predmet ON " +
+                "Predmet.id = Sesija.fk_predmet ORDER BY datum DESC, vreme_pocetka DESC;", veza);
+            adapter.Fill(dt_sesije);
+            grid_podaci.DataSource = dt_sesije;
+            grid_podaci.Columns["ID сесије"].Visible = false;
+            grid_podaci.Columns["ID предмета"].Visible = false;
+            grid_podaci.Columns["Порука"].Visible = false;
+
+            adapter = new SqlDataAdapter("SELECT * FROM Predmet", veza);
+            adapter.Fill(dt_predmeti);
+            cmb_predmet.DataSource = dt_predmeti;
+            cmb_predmet.ValueMember = "id";
+            cmb_predmet.DisplayMember = "naziv";
+
+            foreach (DataGridViewColumn kolona in grid_podaci.Columns)
+            {
+                kolona.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
+            if(grid_podaci.RowCount > 0)
+            {
+                grid_podaci.Rows[0].Selected = true;
+                Klik_na_grid(0);
+            }            
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Osvezi();           
+        }
+
+        private void btn_osvezi_Click(object sender, EventArgs e)
+        {
+            Osvezi();
+        }
+
+        private void Klik_na_grid(int broj_sloga)
+        {
+            txt_id.Text = dt_sesije.Rows[broj_sloga]["ID сесије"].ToString();
+            cmb_predmet.SelectedValue = dt_sesije.Rows[broj_sloga]["ID предмета"];
+            datum.Value = Convert.ToDateTime(dt_sesije.Rows[broj_sloga]["Датум сесије"]);
+            txt_vreme_pocetka.Text = dt_sesije.Rows[broj_sloga]["Време почетка"].ToString();
+            txt_vreme_zavrsetka.Text = dt_sesije.Rows[broj_sloga]["Време завршетка"].ToString();
+            txt_ukupno_vreme.Text = dt_sesije.Rows[broj_sloga]["Укупно време"].ToString();
+            txt_efektivno_vreme.Text = dt_sesije.Rows[broj_sloga]["Ефективно време"].ToString();
+            txt_poruka.Text = dt_sesije.Rows[broj_sloga]["Порука"].ToString();
+        }
+
+        private void grid_podaci_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(grid_podaci.CurrentRow != null)
+            {
+                int broj_sloga = grid_podaci.CurrentRow.Index;
+                if (broj_sloga >= 0 && grid_podaci.RowCount != 0)
+                {
+                    Klik_na_grid(broj_sloga);
+                }
+            }
+        }
+
+        private void btn_unesi_sesiju_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                veza = new SqlConnection(CS);
+                veza.Open();
+
+                SqlCommand komanda = new SqlCommand("Sesija_Insert", veza);
+                komanda.CommandType = CommandType.StoredProcedure;
+                komanda.Parameters.AddWithValue("@fk_predmet", SqlDbType.Int).Value = cmb_predmet.SelectedValue;
+                komanda.Parameters.AddWithValue("@datum", SqlDbType.Date).Value = datum.Value;
+                komanda.Parameters.AddWithValue("@vreme_pocetka", SqlDbType.Time).Value = txt_vreme_pocetka.Text;
+                komanda.Parameters.AddWithValue("@vreme_zavrsetka", SqlDbType.Time).Value = txt_vreme_zavrsetka.Text;
+                komanda.Parameters.AddWithValue("@ukupno_vreme", SqlDbType.Time).Value = txt_ukupno_vreme.Text;
+                komanda.Parameters.AddWithValue("@efektivno_vreme", SqlDbType.Time).Value = txt_efektivno_vreme.Text;
+                komanda.Parameters.AddWithValue("@poruka", SqlDbType.NVarChar).Value = txt_poruka.Text;
+
+                var povratni_parametar = komanda.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                povratni_parametar.Direction = ParameterDirection.ReturnValue;
+
+                komanda.ExecuteNonQuery();
+                int povratna_vrednost = (int)povratni_parametar.Value;
+                if (povratna_vrednost != 0)
+                {
+                    MessageBox.Show("Дошло је до грешке!");
+                }
+
+                veza.Close();
+
+                Osvezi();
+            }            
+            catch (Exception greska){
+                MessageBox.Show(greska.Message);
+            }
+        }
+    }
+}

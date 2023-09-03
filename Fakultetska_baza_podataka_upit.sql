@@ -68,8 +68,9 @@ SELECT *
 FROM Sesija;
 
 UPDATE sesija
-set poruka = N'Ова сесија\nје била\nдобра!'
-where id = 3;
+set poruka = N'Ова сесија НИЈЕ била
+добра!'
+where id = 10;
 
 
 -- Пример приказа
@@ -148,8 +149,6 @@ BEGIN CATCH
 END CATCH;
 
 EXEC Predmet_Delete @naziv = N'Физика 1';
-
-
 
 CREATE PROCEDURE Sesija_Insert
 @fk_predmet INT,
