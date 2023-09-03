@@ -134,6 +134,7 @@
             // 
             // txt_id
             // 
+            this.txt_id.Enabled = false;
             this.txt_id.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_id.Location = new System.Drawing.Point(59, 60);
             this.txt_id.Name = "txt_id";

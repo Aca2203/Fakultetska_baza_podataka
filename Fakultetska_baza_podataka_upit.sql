@@ -62,19 +62,21 @@ INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', '0:30', NULL, NULL
 INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', NULL, '0:30', NULL);
 INSERT INTO Sesija VALUES (1, '2023-10-06', '09:00', '09:30', NULL, NULL, NULL);
 INSERT INTO Sesija VALUES (1, '2023-10-27', '11:00', '11:30', '0:30', '0:20', NULL);
+INSERT INTO Sesija VALUES (1, '2023-10-27', '9:00', '9:30', '0:30', '0:20', NULL);
 
 SELECT *
 FROM Sesija;
 
 UPDATE sesija
-set poruka = N'Здраво!'
+set poruka = N'Ова сесија\nје била\nдобра!'
 where id = 3;
 
 
 -- Пример приказа
-SELECT Sesija.id AS 'ID сесије', Predmet.naziv AS 'Назив предмета', datum AS 'Датум сесије', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност'
+SELECT Sesija.fk_predmet AS 'ID предмета', Sesija.poruka AS 'Порука', Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност'
 FROM Sesija
-JOIN Predmet ON Predmet.id = Sesija.fk_predmet;
+JOIN Predmet ON Predmet.id = Sesija.fk_predmet
+ORDER BY datum, vreme_pocetka;
 
 -- Процедуре: --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE Predmet_Insert
