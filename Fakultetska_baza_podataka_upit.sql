@@ -12,7 +12,7 @@ CREATE FUNCTION efikasnost_sesije(@ukupno_vreme TIME, @efektivno_vreme TIME)
 RETURNS DECIMAL (5, 2)
 AS
 BEGIN
-  IF (@ukupno_vreme IS NULL) OR (@efektivno_vreme IS NULL) RETURN NULL
+  IF (@ukupno_vreme = '00:00:00') OR (@efektivno_vreme = '00:00:00') RETURN NULL
   ELSE
   BEGIN
     DECLARE @ukupno_minuta INT = DATEDIFF(MINUTE, 0, @ukupno_vreme);
@@ -66,11 +66,6 @@ INSERT INTO Sesija VALUES (1, '2023-10-27', '9:00', '9:30', '0:30', '0:20', NULL
 
 SELECT *
 FROM Sesija;
-
-UPDATE sesija
-set poruka = N'Ова сесија НИЈЕ била
-добра!'
-where id = 10;
 
 
 -- Пример приказа
