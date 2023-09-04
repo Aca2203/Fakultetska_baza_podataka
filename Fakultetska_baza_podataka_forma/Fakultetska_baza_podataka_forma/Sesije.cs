@@ -38,6 +38,7 @@ namespace Fakultetska_baza_podataka_forma
             grid_podaci.Columns["ID предмета"].Visible = false;
             grid_podaci.Columns["Порука"].Visible = false;
 
+            dt_predmeti.Clear();
             adapter = new SqlDataAdapter("SELECT * FROM Predmet", veza);
             adapter.Fill(dt_predmeti);
             cmb_predmet.DataSource = dt_predmeti;
@@ -49,33 +50,55 @@ namespace Fakultetska_baza_podataka_forma
                 kolona.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
 
-            if(grid_podaci.RowCount > 0)
+            if (grid_podaci.RowCount > 0)
             {
+                btn_izmeni_sesiju.Enabled = true;
+                btn_obrisi_sesiju.Enabled = true;
                 grid_podaci.Rows[0].Selected = true;
                 Klik_na_grid(0);
-            }            
+            }
+            else
+            {
+                btn_izmeni_sesiju.Enabled = false;
+                btn_obrisi_sesiju.Enabled = false;
+                Klik_na_grid(-1);
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Osvezi();           
+            Osvezi();            
         }
 
         private void btn_osvezi_Click(object sender, EventArgs e)
         {
-            Osvezi();
+            Osvezi();            
         }
 
         private void Klik_na_grid(int broj_sloga)
         {
-            txt_id.Text = dt_sesije.Rows[broj_sloga]["ID сесије"].ToString();
-            cmb_predmet.SelectedValue = dt_sesije.Rows[broj_sloga]["ID предмета"];
-            datum.Value = Convert.ToDateTime(dt_sesije.Rows[broj_sloga]["Датум сесије"]);
-            txt_vreme_pocetka.Text = dt_sesije.Rows[broj_sloga]["Време почетка"].ToString();
-            txt_vreme_zavrsetka.Text = dt_sesije.Rows[broj_sloga]["Време завршетка"].ToString();
-            txt_ukupno_vreme.Text = dt_sesije.Rows[broj_sloga]["Укупно време"].ToString();
-            txt_efektivno_vreme.Text = dt_sesije.Rows[broj_sloga]["Ефективно време"].ToString();
-            txt_poruka.Text = dt_sesije.Rows[broj_sloga]["Порука"].ToString();
+            if (broj_sloga != -1)
+            {
+                txt_id.Text = dt_sesije.Rows[broj_sloga]["ID сесије"].ToString();
+                cmb_predmet.SelectedValue = dt_sesije.Rows[broj_sloga]["ID предмета"];
+                datum.Value = Convert.ToDateTime(dt_sesije.Rows[broj_sloga]["Датум сесије"]);
+                txt_vreme_pocetka.Text = dt_sesije.Rows[broj_sloga]["Време почетка"].ToString();
+                txt_vreme_zavrsetka.Text = dt_sesije.Rows[broj_sloga]["Време завршетка"].ToString();
+                txt_ukupno_vreme.Text = dt_sesije.Rows[broj_sloga]["Укупно време"].ToString();
+                txt_efektivno_vreme.Text = dt_sesije.Rows[broj_sloga]["Ефективно време"].ToString();
+                txt_poruka.Text = dt_sesije.Rows[broj_sloga]["Порука"].ToString();
+            }
+            else
+            {
+                txt_id.Text = "";
+                cmb_predmet.SelectedValue = -1;
+                datum.Value = DateTime.Now;
+                txt_vreme_pocetka.Text = "";
+                txt_vreme_zavrsetka.Text = "";
+                txt_ukupno_vreme.Text = "";
+                txt_efektivno_vreme.Text = "";
+                txt_poruka.Text = "";
+            }
         }
 
         private void grid_podaci_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -122,6 +145,75 @@ namespace Fakultetska_baza_podataka_forma
                 Osvezi();
             }            
             catch (Exception greska){
+                MessageBox.Show(greska.Message);
+            }
+        }
+
+        private void btn_izmeni_sesiju_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                veza = new SqlConnection(CS);
+                veza.Open();                
+
+                SqlCommand komanda = new SqlCommand("Sesija_Update", veza);
+                komanda.CommandType = CommandType.StoredProcedure;
+                komanda.Parameters.AddWithValue("@id", SqlDbType.Int).Value = txt_id.Text;
+                komanda.Parameters.AddWithValue("@fk_predmet", SqlDbType.Int).Value = cmb_predmet.SelectedValue;
+                komanda.Parameters.AddWithValue("@datum", SqlDbType.Date).Value = datum.Value;
+                komanda.Parameters.AddWithValue("@vreme_pocetka", SqlDbType.Time).Value = txt_vreme_pocetka.Text;
+                komanda.Parameters.AddWithValue("@vreme_zavrsetka", SqlDbType.Time).Value = txt_vreme_zavrsetka.Text;
+                komanda.Parameters.AddWithValue("@ukupno_vreme", SqlDbType.Time).Value = txt_ukupno_vreme.Text;
+                komanda.Parameters.AddWithValue("@efektivno_vreme", SqlDbType.Time).Value = txt_efektivno_vreme.Text;
+                komanda.Parameters.AddWithValue("@poruka", SqlDbType.NVarChar).Value = txt_poruka.Text;
+
+                var povratni_parametar = komanda.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                povratni_parametar.Direction = ParameterDirection.ReturnValue;
+
+                komanda.ExecuteNonQuery();
+                int povratna_vrednost = (int)povratni_parametar.Value;
+                if (povratna_vrednost != 0)
+                {
+                    MessageBox.Show("Дошло је до грешке!");
+                }
+
+                veza.Close();
+                              
+                Osvezi();                
+            }
+            catch (Exception greska)
+            {
+                MessageBox.Show(greska.Message);
+            }
+        }
+
+        private void btn_obrisi_sesiju_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                veza = new SqlConnection(CS);
+                veza.Open();
+
+                SqlCommand komanda = new SqlCommand("Sesija_Delete", veza);
+                komanda.CommandType = CommandType.StoredProcedure;
+                komanda.Parameters.AddWithValue("@id", SqlDbType.Int).Value = txt_id.Text;              
+
+                var povratni_parametar = komanda.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                povratni_parametar.Direction = ParameterDirection.ReturnValue;
+
+                komanda.ExecuteNonQuery();
+                int povratna_vrednost = (int)povratni_parametar.Value;
+                if (povratna_vrednost != 0)
+                {
+                    MessageBox.Show("ID сесије је погрешан!");
+                }
+
+                veza.Close();
+
+                Osvezi();
+            }
+            catch (Exception greska)
+            {
                 MessageBox.Show(greska.Message);
             }
         }
