@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lbl_id = new System.Windows.Forms.Label();
             this.lbl_predmet = new System.Windows.Forms.Label();
             this.lbl_datum = new System.Windows.Forms.Label();
@@ -58,7 +58,7 @@
             // 
             this.lbl_id.AutoSize = true;
             this.lbl_id.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_id.Location = new System.Drawing.Point(13, 60);
+            this.lbl_id.Location = new System.Drawing.Point(13, 17);
             this.lbl_id.Name = "lbl_id";
             this.lbl_id.Size = new System.Drawing.Size(40, 29);
             this.lbl_id.TabIndex = 0;
@@ -68,7 +68,7 @@
             // 
             this.lbl_predmet.AutoSize = true;
             this.lbl_predmet.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_predmet.Location = new System.Drawing.Point(121, 60);
+            this.lbl_predmet.Location = new System.Drawing.Point(121, 17);
             this.lbl_predmet.Name = "lbl_predmet";
             this.lbl_predmet.Size = new System.Drawing.Size(109, 29);
             this.lbl_predmet.TabIndex = 1;
@@ -78,7 +78,7 @@
             // 
             this.lbl_datum.AutoSize = true;
             this.lbl_datum.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_datum.Location = new System.Drawing.Point(863, 60);
+            this.lbl_datum.Location = new System.Drawing.Point(863, 17);
             this.lbl_datum.Name = "lbl_datum";
             this.lbl_datum.Size = new System.Drawing.Size(82, 29);
             this.lbl_datum.TabIndex = 2;
@@ -88,7 +88,7 @@
             // 
             this.lbl_vreme_pocetka.AutoSize = true;
             this.lbl_vreme_pocetka.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_vreme_pocetka.Location = new System.Drawing.Point(40, 133);
+            this.lbl_vreme_pocetka.Location = new System.Drawing.Point(40, 90);
             this.lbl_vreme_pocetka.Name = "lbl_vreme_pocetka";
             this.lbl_vreme_pocetka.Size = new System.Drawing.Size(171, 29);
             this.lbl_vreme_pocetka.TabIndex = 3;
@@ -98,7 +98,7 @@
             // 
             this.lbl_vreme_zavrsetka.AutoSize = true;
             this.lbl_vreme_zavrsetka.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_vreme_zavrsetka.Location = new System.Drawing.Point(16, 181);
+            this.lbl_vreme_zavrsetka.Location = new System.Drawing.Point(16, 138);
             this.lbl_vreme_zavrsetka.Name = "lbl_vreme_zavrsetka";
             this.lbl_vreme_zavrsetka.Size = new System.Drawing.Size(198, 29);
             this.lbl_vreme_zavrsetka.TabIndex = 4;
@@ -108,7 +108,7 @@
             // 
             this.lbl_ukupno_vreme.AutoSize = true;
             this.lbl_ukupno_vreme.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_ukupno_vreme.Location = new System.Drawing.Point(52, 227);
+            this.lbl_ukupno_vreme.Location = new System.Drawing.Point(52, 184);
             this.lbl_ukupno_vreme.Name = "lbl_ukupno_vreme";
             this.lbl_ukupno_vreme.Size = new System.Drawing.Size(162, 29);
             this.lbl_ukupno_vreme.TabIndex = 5;
@@ -118,7 +118,7 @@
             // 
             this.lbl_efektivno_vreme.AutoSize = true;
             this.lbl_efektivno_vreme.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_efektivno_vreme.Location = new System.Drawing.Point(14, 272);
+            this.lbl_efektivno_vreme.Location = new System.Drawing.Point(14, 229);
             this.lbl_efektivno_vreme.Name = "lbl_efektivno_vreme";
             this.lbl_efektivno_vreme.Size = new System.Drawing.Size(198, 29);
             this.lbl_efektivno_vreme.TabIndex = 6;
@@ -128,7 +128,7 @@
             // 
             this.lbl_poruka.AutoSize = true;
             this.lbl_poruka.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_poruka.Location = new System.Drawing.Point(333, 93);
+            this.lbl_poruka.Location = new System.Drawing.Point(333, 50);
             this.lbl_poruka.Name = "lbl_poruka";
             this.lbl_poruka.Size = new System.Drawing.Size(94, 29);
             this.lbl_poruka.TabIndex = 7;
@@ -138,7 +138,7 @@
             // 
             this.txt_id.Enabled = false;
             this.txt_id.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_id.Location = new System.Drawing.Point(59, 60);
+            this.txt_id.Location = new System.Drawing.Point(59, 17);
             this.txt_id.Name = "txt_id";
             this.txt_id.Size = new System.Drawing.Size(40, 33);
             this.txt_id.TabIndex = 8;
@@ -146,7 +146,7 @@
             // txt_vreme_pocetka
             // 
             this.txt_vreme_pocetka.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_vreme_pocetka.Location = new System.Drawing.Point(217, 130);
+            this.txt_vreme_pocetka.Location = new System.Drawing.Point(217, 87);
             this.txt_vreme_pocetka.Name = "txt_vreme_pocetka";
             this.txt_vreme_pocetka.Size = new System.Drawing.Size(100, 37);
             this.txt_vreme_pocetka.TabIndex = 9;
@@ -154,7 +154,7 @@
             // txt_vreme_zavrsetka
             // 
             this.txt_vreme_zavrsetka.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_vreme_zavrsetka.Location = new System.Drawing.Point(217, 178);
+            this.txt_vreme_zavrsetka.Location = new System.Drawing.Point(217, 135);
             this.txt_vreme_zavrsetka.Name = "txt_vreme_zavrsetka";
             this.txt_vreme_zavrsetka.Size = new System.Drawing.Size(100, 37);
             this.txt_vreme_zavrsetka.TabIndex = 10;
@@ -162,7 +162,7 @@
             // txt_ukupno_vreme
             // 
             this.txt_ukupno_vreme.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_ukupno_vreme.Location = new System.Drawing.Point(217, 224);
+            this.txt_ukupno_vreme.Location = new System.Drawing.Point(217, 181);
             this.txt_ukupno_vreme.Name = "txt_ukupno_vreme";
             this.txt_ukupno_vreme.Size = new System.Drawing.Size(100, 37);
             this.txt_ukupno_vreme.TabIndex = 11;
@@ -170,7 +170,7 @@
             // txt_efektivno_vreme
             // 
             this.txt_efektivno_vreme.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_efektivno_vreme.Location = new System.Drawing.Point(217, 269);
+            this.txt_efektivno_vreme.Location = new System.Drawing.Point(217, 226);
             this.txt_efektivno_vreme.Name = "txt_efektivno_vreme";
             this.txt_efektivno_vreme.Size = new System.Drawing.Size(100, 37);
             this.txt_efektivno_vreme.TabIndex = 12;
@@ -178,7 +178,7 @@
             // txt_poruka
             // 
             this.txt_poruka.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_poruka.Location = new System.Drawing.Point(338, 125);
+            this.txt_poruka.Location = new System.Drawing.Point(338, 82);
             this.txt_poruka.Name = "txt_poruka";
             this.txt_poruka.Size = new System.Drawing.Size(570, 181);
             this.txt_poruka.TabIndex = 13;
@@ -187,7 +187,7 @@
             // datum
             // 
             this.datum.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.datum.Location = new System.Drawing.Point(951, 54);
+            this.datum.Location = new System.Drawing.Point(951, 11);
             this.datum.Name = "datum";
             this.datum.Size = new System.Drawing.Size(252, 37);
             this.datum.TabIndex = 14;
@@ -196,7 +196,7 @@
             // 
             this.cmb_predmet.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmb_predmet.FormattingEnabled = true;
-            this.cmb_predmet.Location = new System.Drawing.Point(236, 57);
+            this.cmb_predmet.Location = new System.Drawing.Point(236, 14);
             this.cmb_predmet.Name = "cmb_predmet";
             this.cmb_predmet.Size = new System.Drawing.Size(621, 37);
             this.cmb_predmet.TabIndex = 15;
@@ -204,7 +204,7 @@
             // btn_unesi_sesiju
             // 
             this.btn_unesi_sesiju.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_unesi_sesiju.Location = new System.Drawing.Point(951, 106);
+            this.btn_unesi_sesiju.Location = new System.Drawing.Point(951, 63);
             this.btn_unesi_sesiju.Name = "btn_unesi_sesiju";
             this.btn_unesi_sesiju.Size = new System.Drawing.Size(252, 46);
             this.btn_unesi_sesiju.TabIndex = 16;
@@ -215,7 +215,7 @@
             // btn_izmeni_sesiju
             // 
             this.btn_izmeni_sesiju.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_izmeni_sesiju.Location = new System.Drawing.Point(951, 156);
+            this.btn_izmeni_sesiju.Location = new System.Drawing.Point(951, 113);
             this.btn_izmeni_sesiju.Name = "btn_izmeni_sesiju";
             this.btn_izmeni_sesiju.Size = new System.Drawing.Size(252, 46);
             this.btn_izmeni_sesiju.TabIndex = 17;
@@ -226,7 +226,7 @@
             // btn_obrisi_sesiju
             // 
             this.btn_obrisi_sesiju.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_obrisi_sesiju.Location = new System.Drawing.Point(951, 208);
+            this.btn_obrisi_sesiju.Location = new System.Drawing.Point(951, 165);
             this.btn_obrisi_sesiju.Name = "btn_obrisi_sesiju";
             this.btn_obrisi_sesiju.Size = new System.Drawing.Size(252, 46);
             this.btn_obrisi_sesiju.TabIndex = 18;
@@ -237,7 +237,7 @@
             // btn_osvezi
             // 
             this.btn_osvezi.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_osvezi.Location = new System.Drawing.Point(951, 260);
+            this.btn_osvezi.Location = new System.Drawing.Point(951, 217);
             this.btn_osvezi.Name = "btn_osvezi";
             this.btn_osvezi.Size = new System.Drawing.Size(252, 46);
             this.btn_osvezi.TabIndex = 19;
@@ -249,27 +249,27 @@
             // 
             this.grid_podaci.AllowUserToAddRows = false;
             this.grid_podaci.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.grid_podaci.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.grid_podaci.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.grid_podaci.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.grid_podaci.DefaultCellStyle = dataGridViewCellStyle4;
-            this.grid_podaci.Location = new System.Drawing.Point(12, 312);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.grid_podaci.DefaultCellStyle = dataGridViewCellStyle2;
+            this.grid_podaci.Location = new System.Drawing.Point(12, 269);
             this.grid_podaci.Name = "grid_podaci";
             this.grid_podaci.ReadOnly = true;
-            this.grid_podaci.Size = new System.Drawing.Size(1191, 435);
+            this.grid_podaci.Size = new System.Drawing.Size(1191, 478);
             this.grid_podaci.TabIndex = 20;
             this.grid_podaci.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid_podaci_CellClick);
             // 

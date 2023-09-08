@@ -43,12 +43,7 @@ namespace Fakultetska_baza_podataka_forma
             adapter.Fill(dt_predmeti);
             cmb_predmet.DataSource = dt_predmeti;
             cmb_predmet.ValueMember = "id";
-            cmb_predmet.DisplayMember = "naziv";
-
-            foreach (DataGridViewColumn kolona in grid_podaci.Columns)
-            {
-                kolona.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
+            cmb_predmet.DisplayMember = "naziv";            
 
             if (grid_podaci.RowCount > 0)
             {
@@ -67,7 +62,12 @@ namespace Fakultetska_baza_podataka_forma
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Osvezi();            
+            Osvezi();
+
+            foreach (DataGridViewColumn kolona in grid_podaci.Columns)
+            {
+                kolona.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
         }
 
         private void btn_osvezi_Click(object sender, EventArgs e)

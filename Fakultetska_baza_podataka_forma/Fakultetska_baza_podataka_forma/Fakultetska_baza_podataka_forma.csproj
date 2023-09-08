@@ -47,6 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Predmeti.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Predmeti.Designer.cs">
+      <DependentUpon>Predmeti.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sesije.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -55,6 +61,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Predmeti.resx">
+      <DependentUpon>Predmeti.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sesije.resx">
       <DependentUpon>Sesije.cs</DependentUpon>
     </EmbeddedResource>

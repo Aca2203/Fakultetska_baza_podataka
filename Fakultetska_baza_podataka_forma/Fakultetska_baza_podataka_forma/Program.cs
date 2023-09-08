@@ -16,7 +16,7 @@ namespace Fakultetska_baza_podataka_forma
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Sesije());
+            Application.Run(new Predmeti());
         }
     }
 }
