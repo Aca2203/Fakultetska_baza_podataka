@@ -55,11 +55,11 @@ namespace Fakultetska_baza_podataka_forma
             {
                 txt_id.Text = dt_predmeti.Rows[broj_sloga]["ID предмета"].ToString();
                 txt_naziv.Text = dt_predmeti.Rows[broj_sloga]["Назив предмета"].ToString();
-                cmb_godina.SelectedIndex = (int) dt_predmeti.Rows[broj_sloga]["Година"] - 1;
-                cmb_semestar.SelectedIndex = (int)dt_predmeti.Rows[broj_sloga]["Семестар"] - 1;
+                cmb_godina.SelectedItem = dt_predmeti.Rows[broj_sloga]["Година"];
+                cmb_semestar.SelectedItem = dt_predmeti.Rows[broj_sloga]["Семестар"];
                 txt_poruka.Text = dt_predmeti.Rows[broj_sloga]["Порука"].ToString();
                 txt_espb.Text = dt_predmeti.Rows[broj_sloga]["Еспб"].ToString();
-                cmb_tezina.SelectedIndex = (int)dt_predmeti.Rows[broj_sloga]["Тежина"] - 1;
+                cmb_tezina.SelectedItem = dt_predmeti.Rows[broj_sloga]["Тежина"];
             }
             else
             {
@@ -84,7 +84,7 @@ namespace Fakultetska_baza_podataka_forma
             for (int i = 1; i <= 2; i++) cmb_semestar.Items.Add(i);
             for (int i = 1; i <= 3; i++) cmb_tezina.Items.Add(i);
 
-            Osvezi();
+            Osvezi();            
         }
 
         private void btn_osvezi_Click(object sender, EventArgs e)
@@ -101,6 +101,109 @@ namespace Fakultetska_baza_podataka_forma
                 {
                     Klik_na_grid(broj_sloga);
                 }
+            }
+        }
+
+        private void btn_unesi_predmet_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                veza = new SqlConnection(CS);
+                veza.Open();
+
+                SqlCommand komanda = new SqlCommand("Predmet_Insert", veza);
+                komanda.CommandType = CommandType.StoredProcedure;
+                komanda.Parameters.AddWithValue("@naziv", SqlDbType.NVarChar).Value = txt_naziv.Text;
+                komanda.Parameters.AddWithValue("@godina", SqlDbType.Int).Value = cmb_godina.SelectedItem;
+                komanda.Parameters.AddWithValue("@semestar", SqlDbType.Int).Value = cmb_semestar.SelectedItem;
+                komanda.Parameters.AddWithValue("@espb", SqlDbType.Int).Value = txt_espb.Text;
+
+                var povratni_parametar = komanda.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                povratni_parametar.Direction = ParameterDirection.ReturnValue;
+
+                komanda.ExecuteNonQuery();
+                int povratna_vrednost = (int)povratni_parametar.Value;
+                if (povratna_vrednost != 0)
+                {
+                    if (povratna_vrednost == -1) MessageBox.Show("Дати предмет већ постоји!");
+                    else MessageBox.Show("Дошло је до грешке!");
+                }
+
+                veza.Close();
+
+                Osvezi();
+            }
+            catch (Exception greska)
+            {
+                MessageBox.Show(greska.Message);
+            }
+        }
+
+        private void btn_izmeni_predmet_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                veza = new SqlConnection(CS);
+                veza.Open();
+
+                SqlCommand komanda = new SqlCommand("Predmet_Update", veza);
+                komanda.CommandType = CommandType.StoredProcedure;
+                komanda.Parameters.AddWithValue("@naziv", SqlDbType.NVarChar).Value = txt_naziv.Text;
+                komanda.Parameters.AddWithValue("@godina", SqlDbType.Int).Value = cmb_godina.SelectedItem;
+                komanda.Parameters.AddWithValue("@semestar", SqlDbType.Int).Value = cmb_semestar.SelectedItem;
+                komanda.Parameters.AddWithValue("@poruka", SqlDbType.NVarChar).Value = txt_poruka.Text;
+                komanda.Parameters.AddWithValue("@espb", SqlDbType.Int).Value = txt_espb.Text;
+                komanda.Parameters.AddWithValue("@tezina", SqlDbType.Int).Value = cmb_tezina.SelectedItem;
+
+                var povratni_parametar = komanda.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                povratni_parametar.Direction = ParameterDirection.ReturnValue;
+
+                komanda.ExecuteNonQuery();
+                int povratna_vrednost = (int)povratni_parametar.Value;
+                if (povratna_vrednost != 0)
+                {
+                    if (povratna_vrednost == -1) MessageBox.Show("Дати предмет не постоји!");
+                    else MessageBox.Show("Дошло је до грешке!");
+                }
+
+                veza.Close();
+
+                Osvezi();
+            }
+            catch (Exception greska)
+            {
+                MessageBox.Show(greska.Message);
+            }
+        }
+
+        private void btn_obrisi_predmet_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                veza = new SqlConnection(CS);
+                veza.Open();
+
+                SqlCommand komanda = new SqlCommand("Predmet_Delete", veza);
+                komanda.CommandType = CommandType.StoredProcedure;
+                komanda.Parameters.AddWithValue("@naziv", SqlDbType.NVarChar).Value = txt_naziv.Text;
+
+                var povratni_parametar = komanda.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                povratni_parametar.Direction = ParameterDirection.ReturnValue;
+
+                komanda.ExecuteNonQuery();
+                int povratna_vrednost = (int)povratni_parametar.Value;
+                if (povratna_vrednost != 0)
+                {
+                    MessageBox.Show("Дати предмет не постоји!");
+                }
+
+                veza.Close();
+
+                Osvezi();
+            }
+            catch (Exception greska)
+            {
+                MessageBox.Show(greska.Message);
             }
         }
     }
