@@ -194,7 +194,14 @@ namespace Fakultetska_baza_podataka_forma
                 int povratna_vrednost = (int)povratni_parametar.Value;
                 if (povratna_vrednost != 0)
                 {
-                    MessageBox.Show("Дати предмет не постоји!");
+                    if (povratna_vrednost == -1)
+                    {
+                        MessageBox.Show("Дати предмет не постоји!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Грешка!");
+                    }
                 }
 
                 veza.Close();

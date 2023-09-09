@@ -75,7 +75,7 @@ FROM Sesija;
 SELECT Sesija.fk_predmet AS 'ID предмета', Sesija.poruka AS 'Порука', Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност'
 FROM Sesija
 JOIN Predmet ON Predmet.id = Sesija.fk_predmet
-ORDER BY datum, vreme_pocetka;
+ORDER BY datum DESC, vreme_pocetka DESC;
 
 -- Процедуре: --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE Predmet_Insert
@@ -217,3 +217,28 @@ BEGIN CATCH
 END CATCH;
 
 EXEC Sesija_Delete @id = 7;
+
+-- Окидачи
+CREATE TRIGGER promena_poruke
+ON Sesija
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+  DECLARE @fk_predmet INT;
+  IF(EXISTS(SELECT * FROM inserted))
+  BEGIN
+    DECLARE @poruka NVARCHAR(500);
+    SET @poruka = (SELECT poruka FROM inserted);
+    SET @fk_predmet = (SELECT fk_predmet FROM inserted);
+    UPDATE Predmet
+    SET poruka = @poruka
+    WHERE id = @fk_predmet;
+  END
+  ELSE
+  BEGIN
+    SET @fk_predmet = (SELECT fk_predmet FROM deleted);
+	UPDATE Predmet
+	SET poruka = ''
+	WHERE id = @fk_predmet;
+  END;
+END;
