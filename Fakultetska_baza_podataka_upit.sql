@@ -41,8 +41,8 @@ INSERT INTO Predmet VALUES (N'Физика 1', 1, 1, NULL, 6, 2);
 SELECT *
 FROM Predmet;
 UPDATE predmet
-set espb = 4;
-where id = 4;
+set tezina = 2
+where id = 5;
 
 SELECT id AS 'ID предмета', naziv AS 'Назив предмета', godina AS 'Година', semestar AS 'Семестар', poruka AS 'Порука', espb AS 'Еспб', tezina AS 'Тежина' FROM Predmet
 
