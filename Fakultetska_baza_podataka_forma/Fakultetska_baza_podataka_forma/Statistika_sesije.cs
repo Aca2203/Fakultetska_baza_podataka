@@ -26,10 +26,10 @@ namespace Fakultetska_baza_podataka_forma
         private void Osvezi()
         {
             SqlConnection veza = new SqlConnection(CS);
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT DISTINCT datum AS 'Датум', SUM(dbo.sati_u_minute(ukupno_vreme)) / 60.0 AS 'Време' FROM Sesija " +
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT DISTINCT datum AS 'Датум', SUM(dbo.sati_u_minute(ukupno_vreme)) / 60.0 AS 'Укупно време', SUM(dbo.sati_u_minute(efektivno_vreme)) / 60.0 AS 'Ефективно време' FROM Sesija " +
                 "WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) GROUP BY datum;", veza);
             adapter.Fill(tabela);
-            grafikon.DataSource = tabela;
+            grafikon.DataSource = tabela;          
         }
 
         private void Statistika_sesije_Load(object sender, EventArgs e)
