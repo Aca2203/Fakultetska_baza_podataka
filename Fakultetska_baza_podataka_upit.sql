@@ -22,6 +22,13 @@ BEGIN
   RETURN NULL;
 END;
 
+CREATE FUNCTION sati_u_minute(@vreme TIME)
+RETURNS INT
+AS
+BEGIN
+  RETURN DATEDIFF(MINUTE, 0, @vreme);
+END;
+
 --Табеле: ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE Predmet(
   id INT PRIMARY KEY IDENTITY (1, 1),
@@ -40,9 +47,6 @@ INSERT INTO Predmet VALUES (N'Физика 1', 1, 1, NULL, 6, 2);
 
 SELECT *
 FROM Predmet;
-UPDATE predmet
-set tezina = 2
-where id = 5;
 
 SELECT id AS 'ID предмета', naziv AS 'Назив предмета', godina AS 'Година', semestar AS 'Семестар', poruka AS 'Порука', espb AS 'Еспб', tezina AS 'Тежина' FROM Predmet
 
@@ -242,3 +246,9 @@ BEGIN
 	WHERE id = @fk_predmet;
   END;
 END;
+
+-- Примери:
+SELECT DISTINCT datum AS 'Датум', SUM(dbo.sati_u_minute(ukupno_vreme)) AS 'Укупно време'
+FROM Sesija
+WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE))
+GROUP BY datum;

@@ -28,5 +28,11 @@ namespace Fakultetska_baza_podataka_forma
             Predmeti forma = new Predmeti();
             forma.Show();
         }
+
+        private void сесијеToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Statistika_sesije forma = new Statistika_sesije();
+            forma.Show();
+        }
     }
 }
