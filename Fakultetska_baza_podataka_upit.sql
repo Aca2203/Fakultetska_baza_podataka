@@ -29,6 +29,15 @@ BEGIN
   RETURN DATEDIFF(MINUTE, 0, @vreme);
 END;
 
+CREATE FUNCTION minuti_u_sate(@minuti INT)
+RETURNS TIME
+AS
+BEGIN
+  DECLARE @vreme VARCHAR(5);
+  SET @vreme = CAST(@minuti / 60 AS VARCHAR(2)) + ':' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2));
+  RETURN CAST(@vreme AS TIME);
+END;
+
 --Табеле: ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE Predmet(
   id INT PRIMARY KEY IDENTITY (1, 1),
@@ -248,4 +257,6 @@ BEGIN
 END;
 
 -- Примери:
-SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', SUM(dbo.sati_u_minute(ukupno_vreme)) / 60.0 AS 'Укупно време', SUM(dbo.sati_u_minute(efektivno_vreme)) / 60.0 AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
+SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS 'Укупно време', dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
+
+SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;

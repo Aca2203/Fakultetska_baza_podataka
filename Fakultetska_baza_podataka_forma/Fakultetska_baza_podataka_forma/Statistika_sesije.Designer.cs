@@ -47,6 +47,7 @@
             // 
             // grafikon
             // 
+            chartArea1.AxisY.Minimum = 0D;
             chartArea1.Name = "ChartArea1";
             this.grafikon.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
@@ -56,21 +57,21 @@
             series1.ChartArea = "ChartArea1";
             series1.Color = System.Drawing.Color.Green;
             series1.IsValueShownAsLabel = true;
-            series1.Label = "#VALY{##.##}";
             series1.Legend = "Legend1";
             series1.Name = "Укупно време учења";
             series1.XValueMember = "Датум и ефикасност";
             series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
             series1.YValueMembers = "Укупно време";
-            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
             series2.ChartArea = "ChartArea1";
             series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             series2.IsValueShownAsLabel = true;
-            series2.Label = "#VALY{##.##}";
             series2.Legend = "Legend1";
             series2.Name = "Ефективно време учења";
             series2.XValueMember = "Датум и ефикасност";
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
             series2.YValueMembers = "Ефективно време";
+            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
             this.grafikon.Series.Add(series1);
             this.grafikon.Series.Add(series2);
             this.grafikon.Size = new System.Drawing.Size(1132, 467);
