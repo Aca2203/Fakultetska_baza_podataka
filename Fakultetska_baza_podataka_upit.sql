@@ -248,7 +248,4 @@ BEGIN
 END;
 
 -- Примери:
-SELECT DISTINCT datum AS 'Датум', SUM(dbo.sati_u_minute(ukupno_vreme)) AS 'Укупно време'
-FROM Sesija
-WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE))
-GROUP BY datum;
+SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', SUM(dbo.sati_u_minute(ukupno_vreme)) / 60.0 AS 'Укупно време', SUM(dbo.sati_u_minute(efektivno_vreme)) / 60.0 AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;

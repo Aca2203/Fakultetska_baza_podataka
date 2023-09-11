@@ -36,7 +36,7 @@
             this.grafikon = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.lbl_ukupno_vreme_ucenja = new System.Windows.Forms.Label();
             this.labela = new System.Windows.Forms.Label();
-            this.lbl_ukupno_efektivno_vreme_ucenja = new System.Windows.Forms.Label();
+            this.lbl_efektivno_vreme_ucenja = new System.Windows.Forms.Label();
             this.lbl_efikasnost = new System.Windows.Forms.Label();
             this.txt_ukupno_vreme = new System.Windows.Forms.TextBox();
             this.txt_efektivno_vreme = new System.Windows.Forms.TextBox();
@@ -55,17 +55,21 @@
             this.grafikon.Name = "grafikon";
             series1.ChartArea = "ChartArea1";
             series1.Color = System.Drawing.Color.Green;
+            series1.IsValueShownAsLabel = true;
+            series1.Label = "#VALY{##.##}";
             series1.Legend = "Legend1";
             series1.Name = "Укупно време учења";
-            series1.XValueMember = "Датум";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Date;
+            series1.XValueMember = "Датум и ефикасност";
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
             series1.YValueMembers = "Укупно време";
             series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series2.ChartArea = "ChartArea1";
             series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            series2.IsValueShownAsLabel = true;
+            series2.Label = "#VALY{##.##}";
             series2.Legend = "Legend1";
             series2.Name = "Ефективно време учења";
-            series2.XValueMember = "Датум";
+            series2.XValueMember = "Датум и ефикасност";
             series2.YValueMembers = "Ефективно време";
             this.grafikon.Series.Add(series1);
             this.grafikon.Series.Add(series2);
@@ -96,15 +100,15 @@
             this.labela.TabIndex = 27;
             this.labela.Text = "У последњих 7 дана:";
             // 
-            // lbl_ukupno_efektivno_vreme_ucenja
+            // lbl_efektivno_vreme_ucenja
             // 
-            this.lbl_ukupno_efektivno_vreme_ucenja.AutoSize = true;
-            this.lbl_ukupno_efektivno_vreme_ucenja.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_ukupno_efektivno_vreme_ucenja.Location = new System.Drawing.Point(11, 132);
-            this.lbl_ukupno_efektivno_vreme_ucenja.Name = "lbl_ukupno_efektivno_vreme_ucenja";
-            this.lbl_ukupno_efektivno_vreme_ucenja.Size = new System.Drawing.Size(346, 29);
-            this.lbl_ukupno_efektivno_vreme_ucenja.TabIndex = 28;
-            this.lbl_ukupno_efektivno_vreme_ucenja.Text = "Укупно ефективно време учења:";
+            this.lbl_efektivno_vreme_ucenja.AutoSize = true;
+            this.lbl_efektivno_vreme_ucenja.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_efektivno_vreme_ucenja.Location = new System.Drawing.Point(90, 132);
+            this.lbl_efektivno_vreme_ucenja.Name = "lbl_efektivno_vreme_ucenja";
+            this.lbl_efektivno_vreme_ucenja.Size = new System.Drawing.Size(267, 29);
+            this.lbl_efektivno_vreme_ucenja.TabIndex = 28;
+            this.lbl_efektivno_vreme_ucenja.Text = "Ефективно време учења:";
             // 
             // lbl_efikasnost
             // 
@@ -164,7 +168,7 @@
             this.Controls.Add(this.txt_efektivno_vreme);
             this.Controls.Add(this.txt_ukupno_vreme);
             this.Controls.Add(this.lbl_efikasnost);
-            this.Controls.Add(this.lbl_ukupno_efektivno_vreme_ucenja);
+            this.Controls.Add(this.lbl_efektivno_vreme_ucenja);
             this.Controls.Add(this.labela);
             this.Controls.Add(this.lbl_ukupno_vreme_ucenja);
             this.Controls.Add(this.grafikon);
@@ -182,7 +186,7 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart grafikon;
         private System.Windows.Forms.Label lbl_ukupno_vreme_ucenja;
         private System.Windows.Forms.Label labela;
-        private System.Windows.Forms.Label lbl_ukupno_efektivno_vreme_ucenja;
+        private System.Windows.Forms.Label lbl_efektivno_vreme_ucenja;
         private System.Windows.Forms.Label lbl_efikasnost;
         private System.Windows.Forms.TextBox txt_ukupno_vreme;
         private System.Windows.Forms.TextBox txt_efektivno_vreme;
