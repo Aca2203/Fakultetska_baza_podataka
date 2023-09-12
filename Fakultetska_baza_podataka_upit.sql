@@ -12,6 +12,8 @@ CREATE FUNCTION efikasnost_sesije(@ukupno_vreme TIME, @efektivno_vreme TIME)
 RETURNS DECIMAL (5, 2)
 AS
 BEGIN
+  IF (@ukupno_vreme = '00:00:00') AND (@efektivno_vreme = '00:00:00') RETURN 0
+  ELSE
   IF (@ukupno_vreme = '00:00:00') OR (@efektivno_vreme = '00:00:00') RETURN NULL
   ELSE
   BEGIN
@@ -70,6 +72,9 @@ CREATE TABLE Sesija(
   efikasnost AS dbo.efikasnost_sesije(ukupno_vreme, efektivno_vreme),
   poruka NVARCHAR(500)
 );
+
+alter table sesija
+add column efikasnost AS dbo.efikasnost_sesije(ukupno_vreme, efektivno_vreme)
 
 INSERT INTO Sesija VALUES (3, '2023-10-05', '14:30', '16:00', '1:30', '1:00', NULL);
 INSERT INTO Sesija VALUES (2, '2023-10-05', '18:00', '20:00', '2:00', '1:40', NULL);
@@ -258,5 +263,6 @@ END;
 
 -- Примери:
 SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS 'Укупно време', dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
-
-SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
+SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
+SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
+SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
