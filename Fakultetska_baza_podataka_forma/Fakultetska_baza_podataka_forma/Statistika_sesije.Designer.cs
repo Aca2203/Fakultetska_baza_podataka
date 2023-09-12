@@ -74,7 +74,7 @@
             series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
             this.grafikon.Series.Add(series1);
             this.grafikon.Series.Add(series2);
-            this.grafikon.Size = new System.Drawing.Size(1132, 467);
+            this.grafikon.Size = new System.Drawing.Size(1577, 730);
             this.grafikon.TabIndex = 0;
             this.grafikon.Text = "chart1";
             title1.Name = "Title1";
@@ -163,7 +163,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1156, 716);
+            this.ClientSize = new System.Drawing.Size(1601, 979);
             this.Controls.Add(this.btn_osvezi);
             this.Controls.Add(this.txt_efikasnost);
             this.Controls.Add(this.txt_efektivno_vreme);
