@@ -24,6 +24,22 @@ BEGIN
   RETURN NULL;
 END;
 
+CREATE FUNCTION efikasnost(@ukupno_vreme VARCHAR(5), @efektivno_vreme VARCHAR(5))
+RETURNS DECIMAL (5, 2)
+AS
+BEGIN
+  IF (@ukupno_vreme = '00:00') AND (@efektivno_vreme = '00:00') RETURN NULL
+  ELSE
+  IF (@ukupno_vreme = '00:00') OR (@efektivno_vreme = '00:00') RETURN NULL
+  ELSE
+  BEGIN
+    DECLARE @ukupno_minuta INT = CAST(LEFT(@ukupno_vreme, 2) AS INT) * 60 + CAST(RIGHT(@ukupno_vreme, 2) AS INT);
+	DECLARE @efektivno_minuta INT = CAST(LEFT(@efektivno_vreme, 2) AS INT) * 60 + CAST(RIGHT(@efektivno_vreme, 2) AS INT);
+	RETURN CAST(@efektivno_minuta AS DECIMAL) / CAST(@ukupno_minuta AS DECIMAL) * 100;
+  END;
+  RETURN NULL;
+END;
+
 CREATE FUNCTION sati_u_minute(@vreme TIME)
 RETURNS INT
 AS
