@@ -36,11 +36,13 @@ namespace Fakultetska_baza_podataka_forma
             adapter.Fill(tabela);
             grafikon.DataSource = tabela;    
             grafikon.DataBind();                     
-            SqlCommand komanda = new SqlCommand("SELECT CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) / 60 AS VARCHAR(2)) + ':' + CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) - (SUM(dbo.sati_u_minute(ukupno_vreme)) / 60)*60 AS VARCHAR(2)) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);
+            SqlCommand komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);
             veza.Open();
             txt_ukupno_vreme.Text = komanda.ExecuteScalar().ToString();
-            komanda = new SqlCommand("SELECT CAST(SUM(dbo.sati_u_minute(efektivno_vreme)) / 60 AS VARCHAR(2)) + ':' + CAST(SUM(dbo.sati_u_minute(efektivno_vreme)) - (SUM(dbo.sati_u_minute(efektivno_vreme)) / 60)*60 AS VARCHAR(2)) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);
-            txt_efektivno_vreme.Text = komanda.ExecuteScalar().ToString();                     
+            komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);
+            txt_efektivno_vreme.Text = komanda.ExecuteScalar().ToString();
+            komanda = new SqlCommand("SELECT dbo.efikasnost_sesije(CAST('" + txt_ukupno_vreme.Text + "' AS TIME), CAST('" + txt_efektivno_vreme.Text + "' AS TIME))", veza);
+            txt_efikasnost.Text = komanda.ExecuteScalar().ToString() + "%";
             veza.Close();
         }
 
