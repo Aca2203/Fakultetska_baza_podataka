@@ -12,7 +12,7 @@ CREATE FUNCTION efikasnost_sesije(@ukupno_vreme TIME, @efektivno_vreme TIME)
 RETURNS DECIMAL (5, 2)
 AS
 BEGIN
-  IF (@ukupno_vreme = '00:00:00') AND (@efektivno_vreme = '00:00:00') RETURN 0
+  IF ((@ukupno_vreme = '00:00:00') AND (@efektivno_vreme = '00:00:00')) OR ((@ukupno_vreme IS NULL) AND (@efektivno_vreme IS NULL)) RETURN 0
   ELSE
   IF (@ukupno_vreme = '00:00:00') OR (@efektivno_vreme = '00:00:00') RETURN NULL
   ELSE
@@ -21,8 +21,10 @@ BEGIN
 	DECLARE @efektivno_minuta INT = DATEDIFF(MINUTE, 0, @efektivno_vreme);
 	RETURN CAST(@efektivno_minuta AS DECIMAL) / CAST(@ukupno_minuta AS DECIMAL) * 100;
   END;
-  RETURN NULL;
+  RETURN 0;
 END;
+
+drop function efikasnost_sesije
 
 CREATE FUNCTION efikasnost(@ukupno_vreme VARCHAR(5), @efektivno_vreme VARCHAR(5))
 RETURNS DECIMAL (5, 2)
@@ -78,6 +80,7 @@ FROM Predmet;
 
 SELECT id AS 'ID предмета', naziv AS 'Назив предмета', godina AS 'Година', semestar AS 'Семестар', poruka AS 'Порука', espb AS 'Еспб', tezina AS 'Тежина' FROM Predmet
 
+
 CREATE TABLE Sesija(
   id INT PRIMARY KEY IDENTITY (1, 1),
   fk_predmet INT FOREIGN KEY REFERENCES Predmet(id),
@@ -90,7 +93,16 @@ CREATE TABLE Sesija(
   poruka NVARCHAR(500)
 );
 
-alter table sesija
+drop table sesija
+
+select *
+into Sesija
+from sesija_kopija;
+
+select *
+from Sesija
+
+alter table Sesija
 add efikasnost AS dbo.efikasnost_sesije(ukupno_vreme, efektivno_vreme)
 
 INSERT INTO Sesija VALUES (3, '2023-10-05', '14:30', '16:00', '1:30', '1:00', NULL);
@@ -105,6 +117,38 @@ INSERT INTO Sesija VALUES (1, '2023-10-27', '9:00', '9:30', '0:30', '0:20', NULL
 SELECT *
 FROM Sesija;
 
+
+CREATE TABLE Datum(
+  datum DATE PRIMARY KEY
+);
+INSERT INTO Datum VALUES('2023-09-01');
+INSERT INTO Datum VALUES('2023-09-02');
+INSERT INTO Datum VALUES('2023-09-03');
+INSERT INTO Datum VALUES('2023-09-04');
+INSERT INTO Datum VALUES('2023-09-05');
+INSERT INTO Datum VALUES('2023-09-06');
+INSERT INTO Datum VALUES('2023-09-07');
+INSERT INTO Datum VALUES('2023-09-08');
+INSERT INTO Datum VALUES('2023-09-09');
+INSERT INTO Datum VALUES('2023-09-10');
+INSERT INTO Datum VALUES('2023-09-11');
+INSERT INTO Datum VALUES('2023-09-12');
+INSERT INTO Datum VALUES('2023-09-13');
+INSERT INTO Datum VALUES('2023-09-14');
+INSERT INTO Datum VALUES('2023-09-15');
+INSERT INTO Datum VALUES('2023-09-16');
+INSERT INTO Datum VALUES('2023-09-17');
+INSERT INTO Datum VALUES('2023-09-18');
+INSERT INTO Datum VALUES('2023-09-19');
+INSERT INTO Datum VALUES('2023-09-20');
+INSERT INTO Datum VALUES('2023-09-21');
+INSERT INTO Datum VALUES('2023-09-22');
+INSERT INTO Datum VALUES('2023-09-23');
+INSERT INTO Datum VALUES('2023-09-24');
+INSERT INTO Datum VALUES('2023-09-25');
+
+SELECT *
+FROM Datum;
 
 -- Пример приказа
 SELECT Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност', Sesija.poruka AS 'Порука'
@@ -285,3 +329,7 @@ SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((
 SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
 SELECT CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) / 60 AS VARCHAR(2)) + ':' + CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) - (SUM(dbo.sati_u_minute(ukupno_vreme)) / 60)*60 AS VARCHAR(2)) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);
 SELECT dbo.efikasnost_sesije(CAST('13:00' AS TIME), CAST('11:00' AS TIME));
+
+SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Sesija ON Datum.datum = Sesija.datum WHERE Datum.datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) AND Sesija.fk_predmet = 8 GROUP BY Datum.datum;
+
+SELECT Datum.datum AS 'Датум', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време' FROM Datum LEFT JOIN Sesija ON Datum.datum = Sesija.datum WHERE (Sesija.fk_predmet = 8 OR CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) IS NULL) GROUP BY Datum.datum;
