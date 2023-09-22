@@ -126,7 +126,7 @@ namespace Fakultetska_baza_podataka_forma
                 if (povratna_vrednost != 0)
                 {
                     if (povratna_vrednost == -1) MessageBox.Show("Дати предмет већ постоји!");
-                    else MessageBox.Show("Дошло је до грешке!");
+                    else MessageBox.Show("Дошло је до грешке: " + povratna_vrednost);
                 }
 
                 veza.Close();
