@@ -157,7 +157,7 @@ JOIN Predmet ON Predmet.id = Sesija.fk_predmet
 ORDER BY datum DESC, vreme_pocetka DESC;
 
 -- Процедуре: --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ALTER PROCEDURE Predmet_Insert
+CREATE PROCEDURE Predmet_Insert
 @naziv NVARCHAR(100),
 @godina INT,
 @semestar INT,
@@ -169,23 +169,12 @@ BEGIN TRY
   WHERE naziv = @naziv)
   RETURN -1
   ELSE
-    INSERT INTO Predmet (naziv, godina, semestar, poruka, espb, tezina) VALUES (@naziv, @godina, @semestar, NULL, @espb, NULL);	
-	
-	DECLARE @id INT = (SELECT id FROM Predmet WHERE Predmet.naziv = @naziv);
-	DECLARE @naziv_pogleda VARCHAR(500) = 'Predmet_' + CAST(@id AS VARCHAR(3));
-	DECLARE @sql NVARCHAR(1000) = N'CREATE VIEW Pogled AS SELECT @id, @naziv_pogleda';		
-	EXEC sp_executesql @sql;
-	
+    INSERT INTO Predmet (naziv, godina, semestar, poruka, espb, tezina) VALUES (@naziv, @godina, @semestar, NULL, @espb, NULL);		
 	RETURN 0;
 END TRY
 BEGIN CATCH
   RETURN @@ERROR;
 END CATCH;
-
-EXEC sp_executesql N'SELECT * FROM Sesija WHERE Sesija.fk_predmet = @id', @params = N'@id INT', @id = 10;
-select 'Predmet_' + cast(10 as varchar(3))
-select * from Predmet_20;
-drop view Pogled;
 
 EXEC Predmet_Insert @naziv = N'Физика 1', @godina = 1, @semestar = 1, @espb = 6;
 EXEC Predmet_Insert @naziv = N'Физика 1', @godina = 1, @semestar = 1, @espb = 6;
@@ -308,6 +297,25 @@ END CATCH;
 
 EXEC Sesija_Delete @id = 7;
 
+
+
+ALTER PROCEDURE prikaz_po_predmetima
+@id INT
+AS
+BEGIN TRY
+  SELECT *
+  INTO Pomocna_tabela
+  FROM Sesija
+  WHERE Sesija.fk_predmet = @id;
+  SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Pomocna_tabela ON Datum.datum = Pomocna_tabela.datum WHERE Datum.datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;
+END TRY
+BEGIN CATCH
+  RETURN @@ERROR;
+END CATCH;
+
+EXEC prikaz_po_predmetima @id = 36;
+drop table Pomocna_tabela;
+
 -- Окидачи
 CREATE TRIGGER promena_poruke
 ON Sesija
@@ -340,23 +348,5 @@ SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((
 SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
 SELECT CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) / 60 AS VARCHAR(2)) + ':' + CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) - (SUM(dbo.sati_u_minute(ukupno_vreme)) / 60)*60 AS VARCHAR(2)) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);
 SELECT dbo.efikasnost_sesije(CAST('13:00' AS TIME), CAST('11:00' AS TIME));
-
-CREATE VIEW Predmet_8
-AS
-SELECT *
-FROM Sesija
-WHERE fk_predmet = 8;
-
-CREATE VIEW Predmet_9
-AS
-SELECT *
-FROM Sesija
-WHERE fk_predmet = 9;
-
-CREATE VIEW Predmet_10
-AS
-SELECT *
-FROM Sesija
-WHERE fk_predmet = 10;
 
 SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Predmet_9 ON Datum.datum = Predmet_9.datum WHERE Datum.datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;

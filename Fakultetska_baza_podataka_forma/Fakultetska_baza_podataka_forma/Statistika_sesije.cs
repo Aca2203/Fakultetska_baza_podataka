@@ -29,20 +29,23 @@ namespace Fakultetska_baza_podataka_forma
         {
             tabela.Clear();            
             SqlDataAdapter adapter;            
-            veza = new SqlConnection(CS);                       
+            veza = new SqlConnection(CS);
+            veza.Open();
+            SqlCommand komanda;
             if (cmb_predmet.SelectedIndex == 0)
             {                
-                adapter = new SqlDataAdapter("SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Sesija ON Datum.datum = Sesija.datum WHERE Datum.datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;", veza);
+                adapter = new SqlDataAdapter("SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Sesija ON Datum.datum = Sesija.datum WHERE Datum.datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;", veza);                
             }
             else
             {
-                adapter = new SqlDataAdapter("SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Sesija ON Datum.datum = Sesija.datum WHERE Datum.datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) AND Sesija.fk_predmet = " + cmb_predmet.SelectedValue + " GROUP BY Datum.datum;", veza);
+                adapter = new SqlDataAdapter("EXEC prikaz_po_predmetima @id = " + cmb_predmet.SelectedValue, veza);
+                komanda = new SqlCommand("DROP TABLE Pomocna_tabela", veza);
+                komanda.ExecuteNonQuery();
             }
             adapter.Fill(tabela);
             grafikon.DataSource = tabela;    
-            grafikon.DataBind();
-            veza.Open();
-            SqlCommand komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);            
+            grafikon.DataBind();            
+            komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);            
             txt_ukupno_vreme.Text = komanda.ExecuteScalar().ToString();
             komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);
             txt_efektivno_vreme.Text = komanda.ExecuteScalar().ToString();
