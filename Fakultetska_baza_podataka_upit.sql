@@ -26,7 +26,7 @@ END;
 
 drop function efikasnost_sesije
 
-CREATE FUNCTION efikasnost(@ukupno_vreme VARCHAR(5), @efektivno_vreme VARCHAR(5))
+alter FUNCTION efikasnost(@ukupno_vreme VARCHAR(5), @efektivno_vreme VARCHAR(5))
 RETURNS DECIMAL (5, 2)
 AS
 BEGIN
@@ -34,6 +34,7 @@ BEGIN
   ELSE
   IF (@ukupno_vreme = '00:00') OR (@efektivno_vreme = '00:00') RETURN NULL
   ELSE
+  IF (@ukupno_vreme = '') OR (@efektivno_vreme = '') RETURN NULL
   BEGIN
     DECLARE @ukupno_minuta INT = CAST(LEFT(@ukupno_vreme, 2) AS INT) * 60 + CAST(RIGHT(@ukupno_vreme, 2) AS INT);
 	DECLARE @efektivno_minuta INT = CAST(LEFT(@efektivno_vreme, 2) AS INT) * 60 + CAST(RIGHT(@efektivno_vreme, 2) AS INT);
@@ -49,13 +50,22 @@ BEGIN
   RETURN DATEDIFF(MINUTE, 0, @vreme);
 END;
 
-CREATE FUNCTION minuti_u_sate(@minuti INT)
+ALTER FUNCTION minuti_u_sate(@minuti INT)
 RETURNS VARCHAR(5)
 AS
 BEGIN
   DECLARE @vreme VARCHAR(5);
-  IF(@minuti - (@minuti / 60) * 60 < 10) SET @vreme = CAST(@minuti / 60 AS VARCHAR(2)) + ':0' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2))
-  ELSE SET @vreme = CAST(@minuti / 60 AS VARCHAR(2)) + ':' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2));
+  IF(@minuti / 60 < 10)
+  BEGIN
+    IF(@minuti - (@minuti / 60) * 60 < 10) SET @vreme = '0' + CAST(@minuti / 60 AS VARCHAR(2)) + ':0' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2))
+    ELSE SET @vreme = '0' + CAST(@minuti / 60 AS VARCHAR(2)) + ':' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2));
+  END
+  ELSE
+  BEGIN
+    IF(@minuti - (@minuti / 60) * 60 < 10) SET @vreme = CAST(@minuti / 60 AS VARCHAR(2)) + ':0' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2))
+    ELSE SET @vreme = CAST(@minuti / 60 AS VARCHAR(2)) + ':' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2));
+  END;
+
   RETURN @vreme
 END;
 
@@ -300,14 +310,16 @@ EXEC Sesija_Delete @id = 7;
 
 
 ALTER PROCEDURE prikaz_po_predmetima
-@id INT
+@id INT,
+@datum_pocetka DATE,
+@datum_zavrsetka DATE
 AS
 BEGIN TRY
   SELECT *
   INTO Pomocna_tabela
   FROM Sesija
   WHERE Sesija.fk_predmet = @id;
-  SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Pomocna_tabela ON Datum.datum = Pomocna_tabela.datum WHERE Datum.datum >= DATEADD(DAY, -20, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;
+  SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Pomocna_tabela ON Datum.datum = Pomocna_tabela.datum WHERE Datum.datum >= @datum_pocetka AND Datum.datum <= @datum_zavrsetka GROUP BY Datum.datum;
 END TRY
 BEGIN CATCH
   RETURN @@ERROR;
@@ -350,3 +362,7 @@ SELECT CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) / 60 AS VARCHAR(2)) + ':' + CAS
 SELECT dbo.efikasnost_sesije(CAST('13:00' AS TIME), CAST('11:00' AS TIME));
 
 SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Predmet_9 ON Datum.datum = Predmet_9.datum WHERE Datum.datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;
+
+SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Pomocna_tabela WHERE datum >= '2023-09-18' AND datum <= '2023-09-24';
+
+SELECT dbo.efikasnost('19:00', '15:30')

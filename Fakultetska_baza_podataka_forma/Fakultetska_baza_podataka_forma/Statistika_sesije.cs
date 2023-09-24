@@ -18,7 +18,7 @@ namespace Fakultetska_baza_podataka_forma
         SqlConnection veza;
         string CS = ConfigurationManager.ConnectionStrings["CS"].ToString();
         DataTable tabela = new DataTable();
-        DataTable predmeti = new DataTable();
+        DataTable predmeti = new DataTable();        
 
         public Statistika_sesije()
         {
@@ -31,14 +31,14 @@ namespace Fakultetska_baza_podataka_forma
             SqlDataAdapter adapter;            
             veza = new SqlConnection(CS);
             veza.Open();
-            SqlCommand komanda;
+            SqlCommand komanda;            
             if (cmb_predmet.SelectedIndex == 0)
             {                
-                adapter = new SqlDataAdapter("SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Sesija ON Datum.datum = Sesija.datum WHERE Datum.datum >= DATEADD(DAY, -20, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;", veza);                
+                adapter = new SqlDataAdapter("SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Sesija ON Datum.datum = Sesija.datum WHERE Datum.datum >= '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "' AND Datum.datum <= '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "' GROUP BY Datum.datum;", veza);                
             }
             else
             {
-                adapter = new SqlDataAdapter("EXEC prikaz_po_predmetima @id = " + cmb_predmet.SelectedValue, veza);                
+                adapter = new SqlDataAdapter("EXEC prikaz_po_predmetima @id = " + cmb_predmet.SelectedValue + ", @datum_pocetka = '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "', @datum_zavrsetka = '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "'", veza);
             }
             adapter.Fill(tabela);
             grafikon.DataSource = tabela;    
@@ -46,25 +46,25 @@ namespace Fakultetska_baza_podataka_forma
 
             if (cmb_predmet.SelectedIndex == 0)
             {
-                komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Sesija WHERE datum >= DATEADD(DAY, -20, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);
+                komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Sesija WHERE datum >= '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "' AND datum <= '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "';", veza);
                 txt_ukupno_vreme.Text = komanda.ExecuteScalar().ToString();
-                komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) FROM Sesija WHERE datum >= DATEADD(DAY, -20, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);
-                txt_efektivno_vreme.Text = komanda.ExecuteScalar().ToString();
+                komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) FROM Sesija WHERE datum >= '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "' AND datum <= '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "';", veza);
+                txt_efektivno_vreme.Text = komanda.ExecuteScalar().ToString();                
                 komanda = new SqlCommand("SELECT dbo.efikasnost('" + txt_ukupno_vreme.Text + "', '" + txt_efektivno_vreme.Text + "')", veza);
                 txt_efikasnost.Text = komanda.ExecuteScalar().ToString() + "%";
             }
             else
             {
-                komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Pomocna_tabela WHERE datum >= DATEADD(DAY, -20, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);
+                komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Pomocna_tabela WHERE datum >= '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "' AND datum <= '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "';", veza);
                 txt_ukupno_vreme.Text = komanda.ExecuteScalar().ToString();
-                komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) FROM Pomocna_tabela WHERE datum >= DATEADD(DAY, -20, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);", veza);
+                komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) FROM Pomocna_tabela WHERE datum >= '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "' AND datum <= '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "';", veza);
                 txt_efektivno_vreme.Text = komanda.ExecuteScalar().ToString();
                 komanda = new SqlCommand("SELECT dbo.efikasnost('" + txt_ukupno_vreme.Text + "', '" + txt_efektivno_vreme.Text + "')", veza);
                 txt_efikasnost.Text = komanda.ExecuteScalar().ToString() + "%";
 
                 komanda = new SqlCommand("DROP TABLE Pomocna_tabela", veza);
                 komanda.ExecuteNonQuery();
-            }                       
+            }            
             veza.Close();
         }
 
@@ -81,6 +81,10 @@ namespace Fakultetska_baza_podataka_forma
             cmb_predmet.ValueMember = "ID";
             cmb_predmet.DisplayMember = "Назив предмета";           
             cmb_predmet.SelectedIndex = 0;
+
+            datum_pocetka.Value = DateTime.Now.AddDays(-6);
+            datum_zavrsetka.Value = DateTime.Now;
+
             veza.Close();
             Osvezi();
         }
@@ -91,6 +95,16 @@ namespace Fakultetska_baza_podataka_forma
         }
 
         private void cmb_predmet_SelectedValueChanged(object sender, EventArgs e)
+        {
+            Osvezi();
+        }
+
+        private void datum_pocetka_ValueChanged(object sender, EventArgs e)
+        {
+            Osvezi();
+        }
+
+        private void datum_zavrsetka_ValueChanged(object sender, EventArgs e)
         {
             Osvezi();
         }
