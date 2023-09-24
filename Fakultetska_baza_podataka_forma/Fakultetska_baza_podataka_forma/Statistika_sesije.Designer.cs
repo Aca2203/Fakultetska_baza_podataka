@@ -173,6 +173,7 @@
             this.cmb_predmet.Name = "cmb_predmet";
             this.cmb_predmet.Size = new System.Drawing.Size(621, 37);
             this.cmb_predmet.TabIndex = 43;
+            this.cmb_predmet.SelectedValueChanged += new System.EventHandler(this.cmb_predmet_SelectedValueChanged);
             // 
             // lbl_predmet
             // 

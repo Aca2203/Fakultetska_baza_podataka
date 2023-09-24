@@ -307,7 +307,7 @@ BEGIN TRY
   INTO Pomocna_tabela
   FROM Sesija
   WHERE Sesija.fk_predmet = @id;
-  SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Pomocna_tabela ON Datum.datum = Pomocna_tabela.datum WHERE Datum.datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;
+  SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Pomocna_tabela ON Datum.datum = Pomocna_tabela.datum WHERE Datum.datum >= DATEADD(DAY, -20, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;
 END TRY
 BEGIN CATCH
   RETURN @@ERROR;
