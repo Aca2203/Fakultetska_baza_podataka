@@ -34,5 +34,11 @@ namespace Fakultetska_baza_podataka_forma
             Statistika_sesije forma = new Statistika_sesije();
             forma.Show();
         }
+
+        private void датумиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Datumi forma = new Datumi();
+            forma.Show();
+        }
     }
 }

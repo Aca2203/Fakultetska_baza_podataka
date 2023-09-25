@@ -32,10 +32,11 @@
             this.формеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сесијеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.предметиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lbl_tekst = new System.Windows.Forms.Label();
             this.статистикаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сесијеToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.предметиToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.lbl_tekst = new System.Windows.Forms.Label();
+            this.датумиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.meni_traka.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,7 +55,8 @@
             // 
             this.формеToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.сесијеToolStripMenuItem,
-            this.предметиToolStripMenuItem});
+            this.предметиToolStripMenuItem,
+            this.датумиToolStripMenuItem});
             this.формеToolStripMenuItem.Name = "формеToolStripMenuItem";
             this.формеToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.формеToolStripMenuItem.Text = "Прегледи";
@@ -62,26 +64,16 @@
             // сесијеToolStripMenuItem
             // 
             this.сесијеToolStripMenuItem.Name = "сесијеToolStripMenuItem";
-            this.сесијеToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.сесијеToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.сесијеToolStripMenuItem.Text = "Сесије";
             this.сесијеToolStripMenuItem.Click += new System.EventHandler(this.сесијеToolStripMenuItem_Click);
             // 
             // предметиToolStripMenuItem
             // 
             this.предметиToolStripMenuItem.Name = "предметиToolStripMenuItem";
-            this.предметиToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.предметиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.предметиToolStripMenuItem.Text = "Предмети";
             this.предметиToolStripMenuItem.Click += new System.EventHandler(this.предметиToolStripMenuItem_Click);
-            // 
-            // lbl_tekst
-            // 
-            this.lbl_tekst.AutoSize = true;
-            this.lbl_tekst.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_tekst.Location = new System.Drawing.Point(47, 69);
-            this.lbl_tekst.Name = "lbl_tekst";
-            this.lbl_tekst.Size = new System.Drawing.Size(448, 29);
-            this.lbl_tekst.TabIndex = 23;
-            this.lbl_tekst.Text = "Добродошли у факултетску базу података!";
             // 
             // статистикаToolStripMenuItem
             // 
@@ -95,15 +87,32 @@
             // сесијеToolStripMenuItem1
             // 
             this.сесијеToolStripMenuItem1.Name = "сесијеToolStripMenuItem1";
-            this.сесијеToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.сесијеToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.сесијеToolStripMenuItem1.Text = "Сесије";
             this.сесијеToolStripMenuItem1.Click += new System.EventHandler(this.сесијеToolStripMenuItem1_Click);
             // 
             // предметиToolStripMenuItem1
             // 
             this.предметиToolStripMenuItem1.Name = "предметиToolStripMenuItem1";
-            this.предметиToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.предметиToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
             this.предметиToolStripMenuItem1.Text = "Предмети";
+            // 
+            // lbl_tekst
+            // 
+            this.lbl_tekst.AutoSize = true;
+            this.lbl_tekst.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_tekst.Location = new System.Drawing.Point(47, 69);
+            this.lbl_tekst.Name = "lbl_tekst";
+            this.lbl_tekst.Size = new System.Drawing.Size(448, 29);
+            this.lbl_tekst.TabIndex = 23;
+            this.lbl_tekst.Text = "Добродошли у факултетску базу података!";
+            // 
+            // датумиToolStripMenuItem
+            // 
+            this.датумиToolStripMenuItem.Name = "датумиToolStripMenuItem";
+            this.датумиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.датумиToolStripMenuItem.Text = "Датуми";
+            this.датумиToolStripMenuItem.Click += new System.EventHandler(this.датумиToolStripMenuItem_Click);
             // 
             // Meni
             // 
@@ -132,5 +141,6 @@
         private System.Windows.Forms.ToolStripMenuItem статистикаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem сесијеToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem предметиToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem датумиToolStripMenuItem;
     }
 }

@@ -308,6 +308,22 @@ END CATCH;
 EXEC Sesija_Delete @id = 7;
 
 
+CREATE PROCEDURE Datum_Insert
+@datum DATE
+AS
+SET LOCK_TIMEOUT 3000;
+BEGIN TRY
+  IF EXISTS(SELECT TOP 1 datum FROM Datum
+  WHERE datum = @datum)
+  RETURN -1
+  ELSE
+    INSERT INTO Datum (datum) VALUES (@datum);	
+	RETURN 0;
+END TRY
+BEGIN CATCH
+  RETURN @@ERROR;
+END CATCH;
+
 
 ALTER PROCEDURE prikaz_po_predmetima
 @id INT,

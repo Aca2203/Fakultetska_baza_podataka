@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Datumi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Datumi.Designer.cs">
+      <DependentUpon>Datumi.cs</DependentUpon>
+    </Compile>
     <Compile Include="Meni.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +80,9 @@
     <Compile Include="Statistika_sesije.Designer.cs">
       <DependentUpon>Statistika_sesije.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Datumi.resx">
+      <DependentUpon>Datumi.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Meni.resx">
       <DependentUpon>Meni.cs</DependentUpon>
     </EmbeddedResource>
