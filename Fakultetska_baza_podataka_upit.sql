@@ -324,16 +324,30 @@ BEGIN CATCH
 END CATCH;
 
 
-CREATE PROCEDURE prikaz_po_predmetima
-@id INT,
+CREATE PROCEDURE prikaz
+@id_predmeta INT,
+@id_mesta INT,
 @datum_pocetka DATE,
 @datum_zavrsetka DATE
 AS
 BEGIN TRY
+  IF (@id_predmeta = 0)
   SELECT *
   INTO Pomocna_tabela
   FROM Sesija
-  WHERE Sesija.fk_predmet = @id;
+  WHERE Sesija.fk_mesto = @id_mesta;
+  ELSE
+  IF (@id_mesta = 0)
+  SELECT *
+  INTO Pomocna_tabela
+  FROM Sesija
+  WHERE Sesija.fk_predmet = @id_predmeta;
+  ELSE
+  SELECT *
+  INTO Pomocna_tabela
+  FROM Sesija
+  WHERE Sesija.fk_predmet = @id_predmeta AND Sesija.fk_mesto = @id_mesta;
+
   SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Pomocna_tabela.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Pomocna_tabela ON Datum.datum = Pomocna_tabela.datum WHERE Datum.datum >= @datum_pocetka AND Datum.datum <= @datum_zavrsetka GROUP BY Datum.datum;
 END TRY
 BEGIN CATCH
@@ -381,3 +395,5 @@ SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efika
 SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Pomocna_tabela WHERE datum >= '2023-09-18' AND datum <= '2023-09-24';
 
 SELECT dbo.efikasnost('19:00', '15:30')
+
+SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Sesija ON Datum.datum = Sesija.datum WHERE Datum.datum >= '2023-09-25' AND Datum.datum <= '2023-09-30' GROUP BY Datum.datum;

@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.grafikon = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.lbl_ukupno_vreme_ucenja = new System.Windows.Forms.Label();
             this.lbl_efektivno_vreme_ucenja = new System.Windows.Forms.Label();
@@ -49,50 +49,52 @@
             this.datum_pocetka = new System.Windows.Forms.DateTimePicker();
             this.datum_zavrsetka = new System.Windows.Forms.DateTimePicker();
             this.lbl_test = new System.Windows.Forms.Label();
+            this.lbl_mesto = new System.Windows.Forms.Label();
+            this.cmb_mesto = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.grafikon)).BeginInit();
             this.SuspendLayout();
             // 
             // grafikon
             // 
-            chartArea1.AxisX.Interval = 1D;
-            chartArea1.AxisX.IsLabelAutoFit = false;
-            chartArea1.AxisX.LabelStyle.Angle = -45;
-            chartArea1.AxisY.Minimum = 0D;
-            chartArea1.Name = "ChartArea1";
-            this.grafikon.ChartAreas.Add(chartArea1);
-            legend1.Enabled = false;
-            legend1.Name = "Legend1";
-            this.grafikon.Legends.Add(legend1);
+            chartArea2.AxisX.Interval = 1D;
+            chartArea2.AxisX.IsLabelAutoFit = false;
+            chartArea2.AxisX.LabelStyle.Angle = -45;
+            chartArea2.AxisY.Minimum = 0D;
+            chartArea2.Name = "ChartArea1";
+            this.grafikon.ChartAreas.Add(chartArea2);
+            legend2.Enabled = false;
+            legend2.Name = "Legend1";
+            this.grafikon.Legends.Add(legend2);
             this.grafikon.Location = new System.Drawing.Point(12, 200);
             this.grafikon.Name = "grafikon";
-            series1.ChartArea = "ChartArea1";
-            series1.Color = System.Drawing.Color.Green;
-            series1.IsValueShownAsLabel = true;
-            series1.Legend = "Legend1";
-            series1.Name = "Укупно време учења";
-            series1.XValueMember = "Датум и ефикасност";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            series1.YValueMembers = "Укупно време";
-            series1.YValuesPerPoint = 4;
-            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
-            series2.ChartArea = "ChartArea1";
-            series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            series2.IsValueShownAsLabel = true;
-            series2.Legend = "Legend1";
-            series2.Name = "Ефективно време учења";
-            series2.XValueMember = "Датум и ефикасност";
-            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            series2.YValueMembers = "Ефективно време";
-            series2.YValuesPerPoint = 4;
-            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
-            this.grafikon.Series.Add(series1);
-            this.grafikon.Series.Add(series2);
+            series3.ChartArea = "ChartArea1";
+            series3.Color = System.Drawing.Color.Green;
+            series3.IsValueShownAsLabel = true;
+            series3.Legend = "Legend1";
+            series3.Name = "Укупно време учења";
+            series3.XValueMember = "Датум и ефикасност";
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series3.YValueMembers = "Укупно време";
+            series3.YValuesPerPoint = 4;
+            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
+            series4.ChartArea = "ChartArea1";
+            series4.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            series4.IsValueShownAsLabel = true;
+            series4.Legend = "Legend1";
+            series4.Name = "Ефективно време учења";
+            series4.XValueMember = "Датум и ефикасност";
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series4.YValueMembers = "Ефективно време";
+            series4.YValuesPerPoint = 4;
+            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
+            this.grafikon.Series.Add(series3);
+            this.grafikon.Series.Add(series4);
             this.grafikon.Size = new System.Drawing.Size(1900, 807);
             this.grafikon.TabIndex = 0;
             this.grafikon.Text = "chart1";
-            title1.Name = "Title1";
-            title1.Text = "Време учења";
-            this.grafikon.Titles.Add(title1);
+            title2.Name = "Title1";
+            title2.Text = "Време учења";
+            this.grafikon.Titles.Add(title2);
             // 
             // lbl_ukupno_vreme_ucenja
             // 
@@ -170,7 +172,6 @@
             this.cmb_predmet.Name = "cmb_predmet";
             this.cmb_predmet.Size = new System.Drawing.Size(621, 37);
             this.cmb_predmet.TabIndex = 43;
-            this.cmb_predmet.SelectedValueChanged += new System.EventHandler(this.cmb_predmet_SelectedValueChanged);
             // 
             // lbl_predmet
             // 
@@ -186,7 +187,7 @@
             // 
             this.labelа.AutoSize = true;
             this.labelа.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelа.Location = new System.Drawing.Point(12, 74);
+            this.labelа.Location = new System.Drawing.Point(75, 106);
             this.labelа.Name = "labelа";
             this.labelа.Size = new System.Drawing.Size(213, 29);
             this.labelа.TabIndex = 44;
@@ -196,7 +197,7 @@
             // 
             this.lbl_od.AutoSize = true;
             this.lbl_od.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_od.Location = new System.Drawing.Point(68, 141);
+            this.lbl_od.Location = new System.Drawing.Point(131, 146);
             this.lbl_od.Name = "lbl_od";
             this.lbl_od.Size = new System.Drawing.Size(41, 29);
             this.lbl_od.TabIndex = 45;
@@ -206,7 +207,7 @@
             // 
             this.lbl_do.AutoSize = true;
             this.lbl_do.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_do.Location = new System.Drawing.Point(374, 141);
+            this.lbl_do.Location = new System.Drawing.Point(437, 146);
             this.lbl_do.Name = "lbl_do";
             this.lbl_do.Size = new System.Drawing.Size(39, 29);
             this.lbl_do.TabIndex = 46;
@@ -215,7 +216,7 @@
             // datum_pocetka
             // 
             this.datum_pocetka.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.datum_pocetka.Location = new System.Drawing.Point(115, 138);
+            this.datum_pocetka.Location = new System.Drawing.Point(178, 143);
             this.datum_pocetka.Name = "datum_pocetka";
             this.datum_pocetka.Size = new System.Drawing.Size(252, 37);
             this.datum_pocetka.TabIndex = 47;
@@ -224,7 +225,7 @@
             // datum_zavrsetka
             // 
             this.datum_zavrsetka.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.datum_zavrsetka.Location = new System.Drawing.Point(419, 138);
+            this.datum_zavrsetka.Location = new System.Drawing.Point(482, 143);
             this.datum_zavrsetka.Name = "datum_zavrsetka";
             this.datum_zavrsetka.Size = new System.Drawing.Size(252, 37);
             this.datum_zavrsetka.TabIndex = 48;
@@ -239,11 +240,32 @@
             this.lbl_test.Size = new System.Drawing.Size(0, 29);
             this.lbl_test.TabIndex = 49;
             // 
+            // lbl_mesto
+            // 
+            this.lbl_mesto.AutoSize = true;
+            this.lbl_mesto.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_mesto.Location = new System.Drawing.Point(36, 60);
+            this.lbl_mesto.Name = "lbl_mesto";
+            this.lbl_mesto.Size = new System.Drawing.Size(84, 29);
+            this.lbl_mesto.TabIndex = 50;
+            this.lbl_mesto.Text = "Место:";
+            // 
+            // cmb_mesto
+            // 
+            this.cmb_mesto.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmb_mesto.FormattingEnabled = true;
+            this.cmb_mesto.Location = new System.Drawing.Point(127, 60);
+            this.cmb_mesto.Name = "cmb_mesto";
+            this.cmb_mesto.Size = new System.Drawing.Size(303, 37);
+            this.cmb_mesto.TabIndex = 51;
+            // 
             // Statistika_sesije
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1601, 979);
+            this.Controls.Add(this.cmb_mesto);
+            this.Controls.Add(this.lbl_mesto);
             this.Controls.Add(this.lbl_test);
             this.Controls.Add(this.datum_zavrsetka);
             this.Controls.Add(this.datum_pocetka);
@@ -288,5 +310,7 @@
         private System.Windows.Forms.DateTimePicker datum_pocetka;
         private System.Windows.Forms.DateTimePicker datum_zavrsetka;
         private System.Windows.Forms.Label lbl_test;
+        private System.Windows.Forms.Label lbl_mesto;
+        private System.Windows.Forms.ComboBox cmb_mesto;
     }
 }
