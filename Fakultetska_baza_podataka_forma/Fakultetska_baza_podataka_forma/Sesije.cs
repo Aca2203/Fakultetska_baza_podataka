@@ -132,6 +132,7 @@ namespace Fakultetska_baza_podataka_forma
                 komanda.CommandType = CommandType.StoredProcedure;
                 komanda.Parameters.AddWithValue("@fk_predmet", SqlDbType.Int).Value = cmb_predmet.SelectedValue;
                 komanda.Parameters.AddWithValue("@datum", SqlDbType.Date).Value = datum.Value;
+                komanda.Parameters.AddWithValue("@fk_mesto", SqlDbType.Int).Value = cmb_mesto.SelectedValue;
                 komanda.Parameters.AddWithValue("@vreme_pocetka", SqlDbType.Time).Value = txt_vreme_pocetka.Text;
                 komanda.Parameters.AddWithValue("@vreme_zavrsetka", SqlDbType.Time).Value = txt_vreme_zavrsetka.Text;
                 komanda.Parameters.AddWithValue("@ukupno_vreme", SqlDbType.Time).Value = txt_ukupno_vreme.Text;
@@ -169,6 +170,7 @@ namespace Fakultetska_baza_podataka_forma
                 komanda.Parameters.AddWithValue("@id", SqlDbType.Int).Value = txt_id.Text;
                 komanda.Parameters.AddWithValue("@fk_predmet", SqlDbType.Int).Value = cmb_predmet.SelectedValue;
                 komanda.Parameters.AddWithValue("@datum", SqlDbType.Date).Value = datum.Value;
+                komanda.Parameters.AddWithValue("@fk_mesto", SqlDbType.Int).Value = cmb_mesto.SelectedValue;
                 komanda.Parameters.AddWithValue("@vreme_pocetka", SqlDbType.Time).Value = txt_vreme_pocetka.Text;
                 komanda.Parameters.AddWithValue("@vreme_zavrsetka", SqlDbType.Time).Value = txt_vreme_zavrsetka.Text;
                 komanda.Parameters.AddWithValue("@ukupno_vreme", SqlDbType.Time).Value = txt_ukupno_vreme.Text;

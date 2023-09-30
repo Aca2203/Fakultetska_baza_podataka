@@ -234,9 +234,10 @@ END CATCH;
 
 EXEC Predmet_Delete @naziv = N'Физика 1';
 
-CREATE PROCEDURE Sesija_Insert
+ALTER PROCEDURE Sesija_Insert
 @fk_predmet INT,
 @datum DATE,
+@fk_mesto INT,
 @vreme_pocetka TIME,
 @vreme_zavrsetka TIME,
 @ukupno_vreme TIME,
@@ -245,7 +246,7 @@ CREATE PROCEDURE Sesija_Insert
 AS
 SET LOCK_TIMEOUT 3000;
 BEGIN TRY
-  INSERT INTO Sesija (fk_predmet, datum, vreme_pocetka, vreme_zavrsetka, ukupno_vreme, efektivno_vreme, poruka) VALUES (@fk_predmet, @datum, @vreme_pocetka, @vreme_zavrsetka, @ukupno_vreme, @efektivno_vreme, @poruka)
+  INSERT INTO Sesija (fk_predmet, datum, fk_mesto, vreme_pocetka, vreme_zavrsetka, ukupno_vreme, efektivno_vreme, poruka) VALUES (@fk_predmet, @datum, @fk_mesto, @vreme_pocetka, @vreme_zavrsetka, @ukupno_vreme, @efektivno_vreme, @poruka)
   RETURN 0;
 END TRY
 BEGIN CATCH
@@ -256,10 +257,11 @@ EXEC Sesija_Insert @fk_predmet = 2, @datum = '2023-08-31', @vreme_pocetka = '17:
 
 
 
-CREATE PROCEDURE Sesija_Update
+ALTER PROCEDURE Sesija_Update
 @id INT,
 @fk_predmet INT,
 @datum DATE,
+@fk_mesto INT,
 @vreme_pocetka TIME,
 @vreme_zavrsetka TIME,
 @ukupno_vreme TIME,
@@ -271,7 +273,7 @@ BEGIN TRY
   IF EXISTS(SELECT TOP 1 id FROM Sesija
   WHERE id = @id)
   BEGIN
-    UPDATE Sesija SET fk_predmet = @fk_predmet, datum = @datum, vreme_pocetka = @vreme_pocetka, vreme_zavrsetka = @vreme_zavrsetka, ukupno_vreme = @ukupno_vreme, efektivno_vreme = @efektivno_vreme, poruka = @poruka WHERE id = @id
+    UPDATE Sesija SET fk_predmet = @fk_predmet, datum = @datum, fk_mesto = @fk_mesto, vreme_pocetka = @vreme_pocetka, vreme_zavrsetka = @vreme_zavrsetka, ukupno_vreme = @ukupno_vreme, efektivno_vreme = @efektivno_vreme, poruka = @poruka WHERE id = @id
 	RETURN 0;
   END;
   RETURN -1;
@@ -322,7 +324,7 @@ BEGIN CATCH
 END CATCH;
 
 
-ALTER PROCEDURE prikaz_po_predmetima
+CREATE PROCEDURE prikaz_po_predmetima
 @id INT,
 @datum_pocetka DATE,
 @datum_zavrsetka DATE
