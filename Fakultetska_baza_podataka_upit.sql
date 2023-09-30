@@ -87,12 +87,11 @@ SELECT *
 FROM Predmet;
 
 -- -----------------------------------------------------------------------------------------------
-
-
 CREATE TABLE Sesija(
   id INT PRIMARY KEY IDENTITY (1, 1),
   fk_predmet INT FOREIGN KEY REFERENCES Predmet(id),
   datum DATE,
+  fk_mesto INT FOREIGN KEY REFERENCES Mesto(id),
   vreme_pocetka TIME,
   vreme_zavrsetka TIME,
   ukupno_vreme TIME,
@@ -100,9 +99,6 @@ CREATE TABLE Sesija(
   efikasnost AS dbo.efikasnost_sesije(ukupno_vreme, efektivno_vreme),
   poruka NVARCHAR(500)
 );
-
-SELECT *
-FROM Sesija
 
 INSERT INTO Sesija VALUES (3, '2023-10-05', '14:30', '16:00', '1:30', '1:00', NULL);
 INSERT INTO Sesija VALUES (2, '2023-10-05', '18:00', '20:00', '2:00', '1:40', NULL);
@@ -161,11 +157,11 @@ INSERT INTO Mesto VALUES(N'Факултет');
 INSERT INTO Mesto VALUES(N'Кућа');
 INSERT INTO Mesto VALUES(N'Рачунарски центар');
 
+SELECT *
+FROM Mesto;
+
 -- Пример приказа
-SELECT Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност', Sesija.poruka AS 'Порука'
-FROM Sesija
-JOIN Predmet ON Predmet.id = Sesija.fk_predmet
-ORDER BY datum DESC, vreme_pocetka DESC;
+SELECT Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Mesto.naziv AS 'Место сесије', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност', Sesija.poruka AS 'Порука' FROM Sesija LEFT JOIN Predmet ON Predmet.id = Sesija.fk_predmet LEFT JOIN Mesto ON Mesto.id = Sesija.fk_mesto ORDER BY datum DESC, vreme_pocetka DESC;
 
 -- Процедуре: --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE Predmet_Insert

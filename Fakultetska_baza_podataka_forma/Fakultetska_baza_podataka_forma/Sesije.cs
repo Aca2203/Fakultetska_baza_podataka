@@ -28,10 +28,7 @@ namespace Fakultetska_baza_podataka_forma
         {
             dt_sesije.Clear();
             veza = new SqlConnection(CS);
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT Sesija.fk_predmet AS 'ID предмета', Sesija.poruka AS 'Порука', Sesija.id AS 'ID сесије', " +
-                "datum AS 'Датум сесије', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', " +
-                "ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', CAST(efikasnost AS VARCHAR) + '%' AS 'Ефикасност' FROM Sesija JOIN Predmet ON " +
-                "Predmet.id = Sesija.fk_predmet ORDER BY datum DESC, vreme_pocetka DESC;", veza);
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Mesto.naziv AS 'Место сесије', Predmet.id AS 'ID предмета', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', CAST(efikasnost AS VARCHAR) + '%' AS 'Ефикасност', Sesija.poruka AS 'Порука' FROM Sesija LEFT JOIN Predmet ON Predmet.id = Sesija.fk_predmet LEFT JOIN Mesto ON Mesto.id = Sesija.fk_mesto ORDER BY datum DESC, vreme_pocetka DESC;", veza);
             adapter.Fill(dt_sesije);
             grid_podaci.DataSource = dt_sesije;
             grid_podaci.Columns["ID сесије"].Visible = false;
