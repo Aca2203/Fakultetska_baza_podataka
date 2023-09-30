@@ -17,6 +17,7 @@ namespace Fakultetska_baza_podataka_forma
         string CS = ConfigurationManager.ConnectionStrings["CS"].ToString();
         DataTable dt_sesije = new DataTable();
         DataTable dt_predmeti = new DataTable();
+        DataTable dt_mesta = new DataTable();
         SqlConnection veza;
 
         public Sesije()
@@ -28,11 +29,12 @@ namespace Fakultetska_baza_podataka_forma
         {
             dt_sesije.Clear();
             veza = new SqlConnection(CS);
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Mesto.naziv AS 'Место сесије', Predmet.id AS 'ID предмета', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', CAST(efikasnost AS VARCHAR) + '%' AS 'Ефикасност', Sesija.poruka AS 'Порука' FROM Sesija LEFT JOIN Predmet ON Predmet.id = Sesija.fk_predmet LEFT JOIN Mesto ON Mesto.id = Sesija.fk_mesto ORDER BY datum DESC, vreme_pocetka DESC;", veza);
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Mesto.id AS 'ID места', Mesto.naziv AS 'Место сесије', Predmet.id AS 'ID предмета', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', CAST(efikasnost AS VARCHAR) + '%' AS 'Ефикасност', Sesija.poruka AS 'Порука' FROM Sesija LEFT JOIN Predmet ON Predmet.id = Sesija.fk_predmet LEFT JOIN Mesto ON Mesto.id = Sesija.fk_mesto ORDER BY datum DESC, vreme_pocetka DESC;", veza);
             adapter.Fill(dt_sesije);
             grid_podaci.DataSource = dt_sesije;
             grid_podaci.Columns["ID сесије"].Visible = false;
             grid_podaci.Columns["ID предмета"].Visible = false;
+            grid_podaci.Columns["ID места"].Visible = false;
             grid_podaci.Columns["Порука"].Visible = false;
 
             dt_predmeti.Clear();
@@ -40,7 +42,14 @@ namespace Fakultetska_baza_podataka_forma
             adapter.Fill(dt_predmeti);
             cmb_predmet.DataSource = dt_predmeti;
             cmb_predmet.ValueMember = "id";
-            cmb_predmet.DisplayMember = "naziv";            
+            cmb_predmet.DisplayMember = "naziv";
+
+            dt_mesta.Clear();
+            adapter = new SqlDataAdapter("SELECT * FROM Mesto", veza);
+            adapter.Fill(dt_mesta);
+            cmb_mesto.DataSource = dt_mesta;
+            cmb_mesto.ValueMember = "id";
+            cmb_mesto.DisplayMember = "naziv";
 
             if (grid_podaci.RowCount > 0)
             {
@@ -78,6 +87,7 @@ namespace Fakultetska_baza_podataka_forma
             {
                 txt_id.Text = dt_sesije.Rows[broj_sloga]["ID сесије"].ToString();
                 cmb_predmet.SelectedValue = dt_sesije.Rows[broj_sloga]["ID предмета"];
+                cmb_mesto.SelectedValue = dt_sesije.Rows[broj_sloga]["ID места"];
                 datum.Value = Convert.ToDateTime(dt_sesije.Rows[broj_sloga]["Датум сесије"]);
                 txt_vreme_pocetka.Text = dt_sesije.Rows[broj_sloga]["Време почетка"].ToString();
                 txt_vreme_zavrsetka.Text = dt_sesije.Rows[broj_sloga]["Време завршетка"].ToString();
@@ -89,6 +99,7 @@ namespace Fakultetska_baza_podataka_forma
             {
                 txt_id.Text = "";
                 cmb_predmet.SelectedValue = -1;
+                cmb_mesto.SelectedValue = -1;
                 datum.Value = DateTime.Now;
                 txt_vreme_pocetka.Text = "";
                 txt_vreme_zavrsetka.Text = "";
