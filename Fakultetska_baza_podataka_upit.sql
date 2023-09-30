@@ -86,7 +86,7 @@ INSERT INTO Predmet VALUES (N'Физика 1', 1, 1, NULL, 6, 2);
 SELECT *
 FROM Predmet;
 
-SELECT id AS 'ID предмета', naziv AS 'Назив предмета', godina AS 'Година', semestar AS 'Семестар', poruka AS 'Порука', espb AS 'Еспб', tezina AS 'Тежина' FROM Predmet
+-- -----------------------------------------------------------------------------------------------
 
 
 CREATE TABLE Sesija(
@@ -101,17 +101,8 @@ CREATE TABLE Sesija(
   poruka NVARCHAR(500)
 );
 
-drop table sesija
-
-select *
-into Sesija
-from sesija_kopija;
-
-select *
-from Sesija
-
-alter table Sesija
-add efikasnost AS dbo.efikasnost_sesije(ukupno_vreme, efektivno_vreme)
+SELECT *
+FROM Sesija
 
 INSERT INTO Sesija VALUES (3, '2023-10-05', '14:30', '16:00', '1:30', '1:00', NULL);
 INSERT INTO Sesija VALUES (2, '2023-10-05', '18:00', '20:00', '2:00', '1:40', NULL);
@@ -125,6 +116,7 @@ INSERT INTO Sesija VALUES (1, '2023-10-27', '9:00', '9:30', '0:30', '0:20', NULL
 SELECT *
 FROM Sesija;
 
+-- -----------------------------------------------------------------------------------------------
 
 CREATE TABLE Datum(
   datum DATE PRIMARY KEY
@@ -157,6 +149,17 @@ INSERT INTO Datum VALUES('2023-09-25');
 
 SELECT *
 FROM Datum;
+
+-- -----------------------------------------------------------------------------------------------
+
+CREATE TABLE Mesto(
+  id INT PRIMARY KEY IDENTITY(1, 1),
+  naziv NVARCHAR(100) NOT NULL
+);
+
+INSERT INTO Mesto VALUES(N'Факултет');
+INSERT INTO Mesto VALUES(N'Кућа');
+INSERT INTO Mesto VALUES(N'Рачунарски центар');
 
 -- Пример приказа
 SELECT Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', efikasnost AS 'Ефикасност', Sesija.poruka AS 'Порука'
