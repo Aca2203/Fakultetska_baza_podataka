@@ -24,8 +24,6 @@ BEGIN
   RETURN 0;
 END;
 
-drop function efikasnost_sesije
-
 alter FUNCTION efikasnost(@ukupno_vreme VARCHAR(5), @efektivno_vreme VARCHAR(5))
 RETURNS DECIMAL (5, 2)
 AS
