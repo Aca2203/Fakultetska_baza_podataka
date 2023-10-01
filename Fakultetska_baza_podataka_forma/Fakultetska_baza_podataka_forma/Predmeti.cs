@@ -28,7 +28,7 @@ namespace Fakultetska_baza_podataka_forma
             dt_predmeti.Clear();
             veza = new SqlConnection(CS);
             SqlDataAdapter adapter = new SqlDataAdapter("SELECT id AS 'ID предмета', naziv AS 'Назив предмета', godina AS 'Година', semestar AS 'Семестар', " +
-                "poruka AS 'Порука', espb AS 'Еспб', tezina AS 'Тежина' FROM Predmet", veza);
+                "poruka AS 'Порука', espb AS 'Еспб', tezina AS 'Тежина' FROM Predmet ORDER BY Predmet.naziv", veza);
             adapter.Fill(dt_predmeti);
             grid_podaci.DataSource = dt_predmeti;
             grid_podaci.Columns["ID предмета"].Visible = false;
