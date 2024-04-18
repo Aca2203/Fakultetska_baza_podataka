@@ -55,8 +55,9 @@ namespace Fakultetska_baza_podataka_forma
                 komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Sesija WHERE datum >= '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "' AND datum <= '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "';", veza);
                 txt_ukupno_vreme.Text = komanda.ExecuteScalar().ToString();
                 komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) FROM Sesija WHERE datum >= '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "' AND datum <= '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "';", veza);
-                txt_efektivno_vreme.Text = komanda.ExecuteScalar().ToString();                
-                komanda = new SqlCommand("SELECT dbo.efikasnost('" + txt_ukupno_vreme.Text + "', '" + txt_efektivno_vreme.Text + "')", veza);
+                txt_efektivno_vreme.Text = komanda.ExecuteScalar().ToString();
+                //MessageBox.Show("SELECT dbo.efikasnost('" + txt_ukupno_vreme.Text + "', '" + txt_efektivno_vreme.Text + "')");
+                komanda = new SqlCommand("SELECT dbo.efikasnost('" + txt_ukupno_vreme.Text + "', '" + txt_efektivno_vreme.Text + "')", veza);           
                 txt_efikasnost.Text = komanda.ExecuteScalar().ToString() + "%";
             }
             else
@@ -65,6 +66,7 @@ namespace Fakultetska_baza_podataka_forma
                 txt_ukupno_vreme.Text = komanda.ExecuteScalar().ToString();
                 komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) FROM Pomocna_tabela WHERE datum >= '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "' AND datum <= '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "';", veza);
                 txt_efektivno_vreme.Text = komanda.ExecuteScalar().ToString();
+                //MessageBox.Show("SELECT dbo.efikasnost('" + txt_ukupno_vreme.Text + "', '" + txt_efektivno_vreme.Text + "')");
                 komanda = new SqlCommand("SELECT dbo.efikasnost('" + txt_ukupno_vreme.Text + "', '" + txt_efektivno_vreme.Text + "')", veza);
                 txt_efikasnost.Text = komanda.ExecuteScalar().ToString() + "%";
 

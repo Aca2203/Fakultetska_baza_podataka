@@ -24,7 +24,7 @@ BEGIN
   RETURN 0;
 END;
 
-alter FUNCTION efikasnost(@ukupno_vreme VARCHAR(5), @efektivno_vreme VARCHAR(5))
+alter FUNCTION efikasnost(@ukupno_vreme VARCHAR(6), @efektivno_vreme VARCHAR(6))
 RETURNS DECIMAL (5, 2)
 AS
 BEGIN
@@ -34,8 +34,10 @@ BEGIN
   ELSE
   IF (@ukupno_vreme = '') OR (@efektivno_vreme = '') RETURN NULL
   BEGIN
-    DECLARE @ukupno_minuta INT = CAST(LEFT(@ukupno_vreme, 2) AS INT) * 60 + CAST(RIGHT(@ukupno_vreme, 2) AS INT);
-	DECLARE @efektivno_minuta INT = CAST(LEFT(@efektivno_vreme, 2) AS INT) * 60 + CAST(RIGHT(@efektivno_vreme, 2) AS INT);
+    DECLARE @pozicija_ukupno_vreme INT = CHARINDEX(':', @ukupno_vreme);
+	DECLARE @pozicija_efektivno_vreme INT = CHARINDEX(':', @efektivno_vreme);
+    DECLARE @ukupno_minuta INT = CAST(LEFT(@ukupno_vreme, @pozicija_ukupno_vreme - 1) AS INT) * 60 + CAST(RIGHT(@ukupno_vreme, 2) AS INT);
+	DECLARE @efektivno_minuta INT = CAST(LEFT(@efektivno_vreme, @pozicija_efektivno_vreme - 1) AS INT) * 60 + CAST(RIGHT(@efektivno_vreme, 2) AS INT);
 	RETURN CAST(@efektivno_minuta AS DECIMAL) / CAST(@ukupno_minuta AS DECIMAL) * 100;
   END;
   RETURN NULL;
@@ -49,20 +51,13 @@ BEGIN
 END;
 
 ALTER FUNCTION minuti_u_sate(@minuti INT)
-RETURNS VARCHAR(5)
+RETURNS VARCHAR(6)
 AS
 BEGIN
-  DECLARE @vreme VARCHAR(5);
-  IF(@minuti / 60 < 10)
-  BEGIN
-    IF(@minuti - (@minuti / 60) * 60 < 10) SET @vreme = '0' + CAST(@minuti / 60 AS VARCHAR(2)) + ':0' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2))
-    ELSE SET @vreme = '0' + CAST(@minuti / 60 AS VARCHAR(2)) + ':' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2));
-  END
-  ELSE
-  BEGIN
-    IF(@minuti - (@minuti / 60) * 60 < 10) SET @vreme = CAST(@minuti / 60 AS VARCHAR(2)) + ':0' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2))
-    ELSE SET @vreme = CAST(@minuti / 60 AS VARCHAR(2)) + ':' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2));
-  END;
+  DECLARE @vreme VARCHAR(6);
+  
+  IF(@minuti - (@minuti / 60) * 60 < 10) SET @vreme = CAST(@minuti / 60 AS VARCHAR(3)) + ':0' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2))
+  ELSE SET @vreme = CAST(@minuti / 60 AS VARCHAR(3)) + ':' + CAST(@minuti - (@minuti / 60) * 60 AS VARCHAR(2));
 
   RETURN @vreme
 END;
@@ -387,13 +382,17 @@ SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((
 SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
 SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(CAST((SUM(dbo.sati_u_minute(efektivno_vreme)) * 100.00) / SUM(dbo.sati_u_minute(ukupno_vreme)) AS DECIMAL(5, 2)) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
 SELECT DISTINCT CONVERT(VARCHAR, datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE) GROUP BY datum;
-SELECT CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) / 60 AS VARCHAR(2)) + ':' + CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) - (SUM(dbo.sati_u_minute(ukupno_vreme)) / 60)*60 AS VARCHAR(2)) FROM Sesija WHERE datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);
+SELECT CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) / 60 AS VARCHAR(3)) + ':' + CAST(SUM(dbo.sati_u_minute(ukupno_vreme)) - (SUM(dbo.sati_u_minute(ukupno_vreme)) / 60)*60 AS VARCHAR(2)) FROM Sesija WHERE datum >= DATEADD(DAY, -15, CAST(GETDATE() AS DATE)) AND datum <= CAST(GETDATE() AS DATE);
 SELECT dbo.efikasnost_sesije(CAST('13:00' AS TIME), CAST('11:00' AS TIME));
 
 SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Predmet_9.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Predmet_9 ON Datum.datum = Predmet_9.datum WHERE Datum.datum >= DATEADD(DAY, -6, CAST(GETDATE() AS DATE)) AND Datum.datum <= CAST(GETDATE() AS DATE) GROUP BY Datum.datum;
 
 SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Pomocna_tabela WHERE datum >= '2023-09-18' AND datum <= '2023-09-24';
 
-SELECT dbo.efikasnost('19:00', '15:30')
+SELECT dbo.efikasnost('119:00', '15:30')
 
 SELECT CONVERT(VARCHAR, Datum.datum, 104) + CHAR(13) + CHAR(10) + CAST(dbo.efikasnost_sesije(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))), dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme)))) AS VARCHAR) + '%' AS 'Датум и ефикасност', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.ukupno_vreme))) AS VARCHAR(5)) AS 'Укупно време', CAST(dbo.minuti_u_sate(SUM(dbo.sati_u_minute(Sesija.efektivno_vreme))) AS VARCHAR(5)) AS 'Ефективно време' FROM Datum LEFT JOIN Sesija ON Datum.datum = Sesija.datum WHERE Datum.datum >= '2023-09-25' AND Datum.datum <= '2023-09-30' GROUP BY Datum.datum;
+
+SELECT dbo.minuti_u_sate(900);
+
+SELECT CAST('07' AS INT)
