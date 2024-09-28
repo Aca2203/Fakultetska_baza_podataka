@@ -19,7 +19,7 @@ namespace Fakultetska_baza_podataka_forma
 
         private void сесијеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Sesije forma = new Sesije();
+            Sesije forma = new Sesije((int) cmb_godina.SelectedItem, (int) cmb_semestar.SelectedItem);
             forma.Show();
         }
 
@@ -39,6 +39,14 @@ namespace Fakultetska_baza_podataka_forma
         {
             Datumi forma = new Datumi();
             forma.Show();
+        }
+
+        private void Meni_Load(object sender, EventArgs e)
+        {
+            for (int i = 1; i <= 4; i++) cmb_godina.Items.Add(i);
+            for (int i = 1; i <= 2; i++) cmb_semestar.Items.Add(i);
+            cmb_godina.SelectedItem = 3;
+            cmb_semestar.SelectedItem = 1;
         }
     }
 }
