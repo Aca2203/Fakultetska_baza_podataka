@@ -41,7 +41,7 @@ namespace Fakultetska_baza_podataka_forma
             grid_podaci.Columns["Порука"].Visible = false;
 
             dt_predmeti.Clear();
-            adapter = new SqlDataAdapter("SELECT * FROM Predmet", veza);
+            adapter = new SqlDataAdapter("SELECT * FROM Predmet WHERE godina = " + godina + " AND semestar = " + semestar, veza);
             adapter.Fill(dt_predmeti);
             cmb_predmet.DataSource = dt_predmeti;
             cmb_predmet.ValueMember = "id";

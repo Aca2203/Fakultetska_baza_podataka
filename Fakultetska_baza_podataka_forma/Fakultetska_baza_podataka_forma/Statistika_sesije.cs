@@ -87,7 +87,7 @@ namespace Fakultetska_baza_podataka_forma
             adapter.Fill(mesta);
             cmb_mesto.DataSource = mesta;
             cmb_mesto.ValueMember = "ID";
-            cmb_mesto.DisplayMember = "Назив места";            
+            cmb_mesto.DisplayMember = "Назив места";
 
             predmeti.Columns.Add("ID", typeof(int));
             predmeti.Columns.Add("Назив предмета", typeof(string));
