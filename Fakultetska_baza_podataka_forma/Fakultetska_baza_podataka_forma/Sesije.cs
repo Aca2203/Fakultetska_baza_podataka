@@ -32,7 +32,7 @@ namespace Fakultetska_baza_podataka_forma
         {
             dt_sesije.Clear();
             veza = new SqlConnection(CS);
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Mesto.id AS 'ID места', Mesto.naziv AS 'Место сесије', Predmet.id AS 'ID предмета', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', CAST(efikasnost AS VARCHAR) + '%' AS 'Ефикасност', Sesija.poruka AS 'Порука' FROM Sesija LEFT JOIN Predmet ON Predmet.id = Sesija.fk_predmet LEFT JOIN Mesto ON Mesto.id = Sesija.fk_mesto WHERE Predmet.godina = " + godina + " AND Predmet.semestar = " + semestar + " ORDER BY datum DESC, vreme_pocetka DESC;", veza);
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT Sesija.id AS 'ID сесије', datum AS 'Датум сесије', Mesto.id AS 'ID места', Mesto.naziv AS 'Место сесије', Predmet.id AS 'ID предмета', Predmet.naziv AS 'Назив предмета', vreme_pocetka AS 'Време почетка', vreme_zavrsetka AS 'Време завршетка', ukupno_vreme AS 'Укупно време', efektivno_vreme AS 'Ефективно време', CAST(efikasnost AS VARCHAR) + '%' AS 'Ефикасност', Sesija.poruka AS 'Порука' FROM Sesija LEFT JOIN Predmet ON Predmet.id = Sesija.fk_predmet LEFT JOIN Mesto ON Mesto.id = Sesija.fk_mesto WHERE Predmet.godina = " + godina + " AND datum >= '2025-07-24' ORDER BY datum DESC, vreme_pocetka DESC;", veza);
             adapter.Fill(dt_sesije);
             grid_podaci.DataSource = dt_sesije;
             grid_podaci.Columns["ID сесије"].Visible = false;
@@ -41,7 +41,7 @@ namespace Fakultetska_baza_podataka_forma
             grid_podaci.Columns["Порука"].Visible = false;
 
             dt_predmeti.Clear();
-            adapter = new SqlDataAdapter("SELECT * FROM Predmet WHERE godina = " + godina + " AND semestar = " + semestar, veza);
+            adapter = new SqlDataAdapter("SELECT * FROM Predmet WHERE godina = " + godina, veza);
             adapter.Fill(dt_predmeti);
             cmb_predmet.DataSource = dt_predmeti;
             cmb_predmet.ValueMember = "id";

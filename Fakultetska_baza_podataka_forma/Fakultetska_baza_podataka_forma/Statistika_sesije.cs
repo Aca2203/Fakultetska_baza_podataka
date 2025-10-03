@@ -50,6 +50,18 @@ namespace Fakultetska_baza_podataka_forma
             grafikon.DataSource = tabela;    
             grafikon.DataBind();
 
+            if(datum_zavrsetka.Value.Subtract(datum_pocetka.Value).TotalDays > 60)
+            {
+                grafikon.Series.FindByName("Укупно време учења").IsValueShownAsLabel = false;
+                grafikon.Series.FindByName("Ефективно време учења").IsValueShownAsLabel = false;
+                grafikon.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            } else
+            {
+                grafikon.Series.FindByName("Укупно време учења").IsValueShownAsLabel = true;
+                grafikon.Series.FindByName("Ефективно време учења").IsValueShownAsLabel = true;
+                grafikon.ChartAreas[0].AxisX.MajorGrid.Enabled = true;
+            }
+
             if (cmb_predmet.SelectedIndex == 0 && cmb_mesto.SelectedIndex == 0)
             {
                 komanda = new SqlCommand("SELECT dbo.minuti_u_sate(SUM(dbo.sati_u_minute(ukupno_vreme))) FROM Sesija WHERE datum >= '" + datum_pocetka.Value.ToString("yyyy-MM-dd") + "' AND datum <= '" + datum_zavrsetka.Value.ToString("yyyy-MM-dd") + "';", veza);
